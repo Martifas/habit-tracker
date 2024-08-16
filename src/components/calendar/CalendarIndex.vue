@@ -1,18 +1,11 @@
 <script setup>
 import { ref, computed } from 'vue';
+import DropdownElement from './dropdownElement.vue';
+import useDropdown from './useDropdown';
 
 const centerDate = ref(new Date());
-const selected = ref('Week');
-const showDropdown = ref(false);
+const { selected } = useDropdown();
 
-function toggleDropdown() {
-  showDropdown.value = !showDropdown.value;
-}
-
-function selectView(view) {
-  selected.value = view;
-  showDropdown.value = false;
-}
 function formatDate(date) {
   const options = { month: 'short', day: 'numeric', weekday: 'short' };
   return date.toLocaleDateString('en-US', options);
@@ -54,7 +47,7 @@ function moveToNextWeek() {
     <a id="second" href="#" @click.prevent="moveToNextWeek">Next week</a>
   </div>
 
-  <div class="week-view">
+  <div v-if="selected === 'Week'" class="week-view">
     <button
       type="button"
       v-for="day in weekDays"
@@ -65,14 +58,9 @@ function moveToNextWeek() {
       {{ day.formattedDate }}
     </button>
   </div>
-  <div class="view-select">
-    <a href="#" @click.prevent="toggleDropdown">Select View: {{ selected }}</a>
-    <div v-if="showDropdown" class="dropdown">
-      <a href="#" @click.prevent="selectView('Month')">Month</a>
-      <a href="#" @click.prevent="selectView('Week')">Week</a>
-      <a href="#" @click.prevent="selectView('Day')">Day</a>
-    </div>
-  </div>
+  <div v-else-if="selected === 'Month'">Month</div>
+  <div v-else>Day</div>
+  <DropdownElement />
 </template>
 
 <style scoped>
@@ -90,36 +78,6 @@ function moveToNextWeek() {
   margin-left: auto;
 }
 
-.view-select {
-  position: relative;
-  text-align: right;
-}
-
-.view-select > a:first-child {
-  color: hsl(160deg 100% 37% / 100%);
-}
-
-.view-select a {
-  color: inherit;
-}
-
-.dropdown {
-  position: absolute;
-  right: 0;
-  white-space: nowrap;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 5px 0;
-}
-
-.dropdown a {
-  display: block;
-  padding: 5px 10px;
-}
-
-.dropdown a:hover {
-  background-color: #f0f0f0;
-}
 .center {
   font-weight: bold;
   border: 1px solid black;
