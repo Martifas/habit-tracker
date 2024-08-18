@@ -9,7 +9,6 @@ const { selected, showDropdown, toggleDropdown, selectView } = useDropdown();
     <div v-if="showDropdown" class="dropdown">
       <a href="#" @click.prevent="selectView('Month')">Month</a>
       <a href="#" @click.prevent="selectView('Week')">Week</a>
-      <a href="#" @click.prevent="selectView('Day')">Day</a>
     </div>
   </div>
 </template>

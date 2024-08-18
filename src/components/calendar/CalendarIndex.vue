@@ -1,91 +1,61 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import DropdownElement from './dropdownElement.vue';
 import useDropdown from './useDropdown';
 
 const centerDate = ref(new Date());
 const { selected } = useDropdown();
+const calendar = ref(null);
 
-function formatDate(date) {
-  const options = { month: 'short', day: 'numeric', weekday: 'short' };
-  return date.toLocaleDateString('en-US', options);
-}
-
-function getDateOffset(date, offset) {
-  const newDate = new Date(date);
-  newDate.setDate(date.getDate() + offset);
-  return newDate;
-}
-
-const weekDays = computed(() => {
-  return [-3, -2, -1, 0, 1, 2, 3].map(offset => {
-    const date = getDateOffset(centerDate.value, offset);
-    return {
-      date,
-      formattedDate: formatDate(date),
-      isCenter: offset === 0,
-    };
-  });
-});
-
-function setNewCenter(newCenter) {
-  centerDate.value = newCenter;
-}
-
-function moveToPreviousWeek() {
-  centerDate.value = getDateOffset(centerDate.value, -7);
-}
-
-function moveToNextWeek() {
-  centerDate.value = getDateOffset(centerDate.value, 7);
+function moveToday() {
+  calendar.value.move(new Date());
+  centerDate.value = new Date();
 }
 </script>
 
 <template>
-  <div id="week-navigator">
-    <a href="#" @click.prevent="moveToPreviousWeek">Previous week</a>
-    <a id="second" href="#" @click.prevent="moveToNextWeek">Next week</a>
-  </div>
-
-  <div v-if="selected === 'Week'" class="week-view">
-    <button
-      type="button"
-      v-for="day in weekDays"
-      :key="day.formattedDate"
-      :class="{ center: day.isCenter }"
-      @click="setNewCenter(day.date)"
+  <div v-if="selected === 'Week'" class="max-w-screen-md max-h-2 m-auto">
+    <VDatePicker
+      :locale="{ firstDayOfWeek: 2 }"
+      ref="calendar"
+      expanded
+      v-model="centerDate"
+      title-position="left"
+      view="weekly"
     >
-      {{ day.formattedDate }}
-    </button>
+      <template #footer>
+        <div class="w-full px-4 pb-3">
+          <button
+            type="submit"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold w-full px-3 py-1 rounded-md"
+            @click="moveToday"
+          >
+            Today
+          </button>
+        </div>
+      </template></VDatePicker
+    ><DropdownElement />
   </div>
-  <div v-else-if="selected === 'Month'">Month</div>
-  <div v-else>Day</div>
-  <DropdownElement />
+  <div v-else class="max-w-screen-md max-h-2 m-auto">
+    <VDatePicker
+      :locale="{ firstDayOfWeek: 2 }"
+      ref="calendar"
+      v-model="centerDate"
+      title-position="left"
+      expanded
+    >
+      <template #footer>
+        <div class="w-full px-4 pb-3">
+          <button
+            type="submit"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold w-full px-3 py-1 rounded-md"
+            @click="moveToday"
+          >
+            Today
+          </button>
+        </div>
+      </template>
+    </VDatePicker>
+    <DropdownElement />
+  </div>
 </template>
-
-<style scoped>
-.week-view {
-  display: flex;
-  justify-content: space-evenly;
-  gap: 5px;
-}
-
-#week-navigator {
-  display: flex;
-}
-
-#second {
-  margin-left: auto;
-}
-
-.center {
-  font-weight: bold;
-  border: 1px solid black;
-}
-button {
-  width: 3rem;
-  height: 4.5rem;
-  font-size: 1rem;
-  font-family: 'Montserrat', system-ui;
-}
-</style>
