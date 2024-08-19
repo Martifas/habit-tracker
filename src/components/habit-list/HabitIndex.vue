@@ -1,0 +1,51 @@
+<script setup>
+import { ref } from 'vue';
+import NewHabitElement from './NewHabitElement.vue';
+
+const id = ref(0);
+const newTodo = ref('');
+const habits = ref([]);
+
+function addTodo() {
+  habits.value.push({ id: id.value + 1, text: newTodo.value });
+  newTodo.value = '';
+}
+
+function removeTodo(todo) {
+  habits.value = habits.value.filter(t => t !== todo);
+}
+</script>
+
+<template>
+  <div class="flex flex-col min-h-screen">
+    <div class="flex-grow px-4">
+      <ul>
+        <li
+          v-for="todo in habits"
+          :key="todo.id"
+          class="bg-indigo-300 w-full border-2 mb-3 justify-between border-black flex flex-row"
+        >
+          <div class="m-2">{{ todo.text }}</div>
+          <button
+            class="bg-white rounded border-2 border-black m-1 p-1"
+            type="button"
+            @click="removeTodo(todo)"
+          >
+            Delete
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="sticky bottom-0 left-0 right-0 p-4 bg-white">
+      <form class="flex flex-col items-center" @submit.prevent="addTodo">
+        <input
+          v-model="newTodo"
+          class="text-center border border-gray-300 p-2 w-full mb-4"
+          required
+          placeholder="New Habit"
+        />
+        <NewHabitElement />
+      </form>
+    </div>
+  </div>
+</template>

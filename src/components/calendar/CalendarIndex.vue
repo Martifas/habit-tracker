@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import DropdownElement from './dropdownElement.vue';
+import DropdownElement from './DropdownElement.vue';
 import useDropdown from './useDropdown';
 import useCalendarRouting from './calendarRouting';
 
@@ -15,7 +15,7 @@ function handleMoveToday() {
 </script>
 
 <template>
-  <div v-if="selected === 'Week'" class="max-w-screen-md max-h-2 m-auto">
+  <div v-if="selected === 'Week'" class="max-w-screen-md">
     <VDatePicker
       :locale="{ firstDayOfWeek: 2 }"
       ref="calendar"
@@ -31,7 +31,7 @@ function handleMoveToday() {
               name: 'day',
               params: { date: new Date().toISOString().split('T')[0] },
             }"
-            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
+            class="todayButton text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
             @click="handleMoveToday"
           >
             Today
@@ -41,7 +41,7 @@ function handleMoveToday() {
     </VDatePicker>
     <DropdownElement />
   </div>
-  <div v-else class="max-w-screen-md max-h-2 m-auto">
+  <div v-else class="max-w-screen-md">
     <VDatePicker
       :locale="{ firstDayOfWeek: 2 }"
       ref="calendar"
@@ -56,7 +56,8 @@ function handleMoveToday() {
               name: 'day',
               params: { date: new Date().toISOString().split('T')[0] },
             }"
-            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
+            class="todayButton text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
+            @click="handleMoveToday"
           >
             Today
           </router-link>
@@ -66,3 +67,11 @@ function handleMoveToday() {
     <DropdownElement />
   </div>
 </template>
+<style scoped>
+.todayButton {
+  background-color: #232323;
+}
+.todayButton:hover {
+  background-color: #8f8c8c;
+}
+</style>
