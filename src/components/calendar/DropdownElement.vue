@@ -4,7 +4,7 @@ import useDropdown from './useDropdown';
 const { selected, showDropdown, toggleDropdown, selectView } = useDropdown();
 </script>
 <template>
-  <div class="view-select bg-white">
+  <div class="view-select py-1">
     <a href="#" @click.prevent="toggleDropdown">Select View: {{ selected }}</a>
     <div v-if="showDropdown" class="dropdown">
       <a href="#" @click.prevent="selectView('Month')">Month</a>
@@ -24,6 +24,7 @@ const { selected, showDropdown, toggleDropdown, selectView } = useDropdown();
 
 .view-select a {
   color: inherit;
+  background-color: #f8faed;
 }
 
 .dropdown {
