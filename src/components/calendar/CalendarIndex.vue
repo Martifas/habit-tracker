@@ -2,14 +2,15 @@
 import { ref } from 'vue';
 import DropdownElement from './dropdownElement.vue';
 import useDropdown from './useDropdown';
+import useCalendarRouting from './calendarRouting';
 
-const centerDate = ref(new Date());
 const { selected } = useDropdown();
 const calendar = ref(null);
+const { centerDate, moveToday } = useCalendarRouting();
 
-function moveToday() {
-  calendar.value.move(new Date());
-  centerDate.value = new Date();
+function handleMoveToday() {
+  moveToday();
+  calendar.value.move(centerDate.value);
 }
 </script>
 
@@ -25,16 +26,20 @@ function moveToday() {
     >
       <template #footer>
         <div class="w-full px-4 pb-3">
-          <button
-            type="submit"
-            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold w-full px-3 py-1 rounded-md"
-            @click="moveToday"
+          <router-link
+            :to="{
+              name: 'day',
+              params: { date: new Date().toISOString().split('T')[0] },
+            }"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
+            @click="handleMoveToday"
           >
             Today
-          </button>
+          </router-link>
         </div>
-      </template></VDatePicker
-    ><DropdownElement />
+      </template>
+    </VDatePicker>
+    <DropdownElement />
   </div>
   <div v-else class="max-w-screen-md max-h-2 m-auto">
     <VDatePicker
@@ -46,13 +51,15 @@ function moveToday() {
     >
       <template #footer>
         <div class="w-full px-4 pb-3">
-          <button
-            type="submit"
-            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold w-full px-3 py-1 rounded-md"
-            @click="moveToday"
+          <router-link
+            :to="{
+              name: 'day',
+              params: { date: new Date().toISOString().split('T')[0] },
+            }"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
           >
             Today
-          </button>
+          </router-link>
         </div>
       </template>
     </VDatePicker>
