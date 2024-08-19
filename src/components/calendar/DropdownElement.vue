@@ -4,7 +4,7 @@ import useDropdown from './useDropdown';
 const { selected, showDropdown, toggleDropdown, selectView } = useDropdown();
 </script>
 <template>
-  <div class="view-select">
+  <div class="view-select bg-white">
     <a href="#" @click.prevent="toggleDropdown">Select View: {{ selected }}</a>
     <div v-if="showDropdown" class="dropdown">
       <a href="#" @click.prevent="selectView('Month')">Month</a>

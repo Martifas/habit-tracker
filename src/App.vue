@@ -11,7 +11,7 @@ import HabitIndex from './components/habit-list/HabitIndex.vue';
       </nav>
     </header>
     <div>
-      <div>
+      <div class="sticky top-0">
         <RouterView />
       </div>
       <div>

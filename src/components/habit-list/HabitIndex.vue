@@ -17,13 +17,13 @@ function removeTodo(todo) {
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen">
-    <div class="flex-grow px-4">
-      <ul>
+  <div class="flex flex-col">
+    <div class="px-4 flex-grow overflow-y-auto pb-20">
+      <ul class="min-h-0">
         <li
           v-for="todo in habits"
           :key="todo.id"
-          class="bg-indigo-300 w-full border-2 mb-3 justify-between border-black flex flex-row"
+          class="bg-indigo-300 w-full border-2 mb-3 justify-between border-black flex flex-row overflow-hidden"
         >
           <div class="m-2">{{ todo.text }}</div>
           <button
@@ -36,7 +36,7 @@ function removeTodo(todo) {
         </li>
       </ul>
     </div>
-    <div class="sticky bottom-0 left-0 right-0 p-4 bg-white">
+    <div class="fixed bottom-0 left-0 right-0 bg-white p-3">
       <form class="flex flex-col items-center" @submit.prevent="addTodo">
         <input
           v-model="newTodo"
