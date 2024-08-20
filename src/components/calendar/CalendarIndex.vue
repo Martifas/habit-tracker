@@ -7,13 +7,11 @@ import useCalendarRouting from './calendarRouting';
 const { selected } = useDropdown();
 const calendar = ref(null);
 const { centerDate, moveToday } = useCalendarRouting();
-
 function handleMoveToday() {
   moveToday();
   calendar.value.move(centerDate.value);
 }
 </script>
-
 <template>
   <div v-if="selected === 'Week'" class="max-w-screen-md">
     <VDatePicker
