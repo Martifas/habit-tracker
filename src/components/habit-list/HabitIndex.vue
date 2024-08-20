@@ -1,72 +1,38 @@
 <script setup>
 import { ref, computed } from 'vue';
 import NewHabitElement from './NewHabitElement.vue';
-import useLocalStorage from './useLocalStorage';
-import useCalendarRouting from '../calendar/calendarRouting';
+import useCalendarStore from '../../store/calendarStore';
 
+const habits = ref([]);
 const newHabit = ref('');
-const habits = useLocalStorage('habits', []);
-const dailyHabits = useLocalStorage('dailyHabits', {});
-const selectedDate = ref(new Date().toISOString().split('T')[0]); // Today's date
-const betterDate = useCalendarRouting();
-const { centerDate } = betterDate;
+const calendarStore = useCalendarStore();
 
-const currentDayHabits = computed(() => {
-  return dailyHabits.value[selectedDate.value] || [];
+const formattedCenterDate = computed(() => {
+  const date = new Date(calendarStore.centerDate);
+  return date.toISOString().split('T')[0];
 });
 
-function updateDailyHabits() {
-  if (!dailyHabits.value[selectedDate.value]) {
-    dailyHabits.value[selectedDate.value] = [];
+const addHabit = () => {
+  if (newHabit.value.trim()) {
+    habits.value.push(newHabit.value.trim());
+    newHabit.value = '';
   }
-  dailyHabits.value[selectedDate.value] = [...habits.value];
-}
-
-function addHabit() {
-  habits.value.push(newHabit.value);
-  newHabit.value = '';
-  updateDailyHabits();
-}
-
-function removeHabit(habit) {
-  habits.value = habits.value.filter(h => h !== habit);
-  updateDailyHabits();
-}
-
-function selectDate(date) {
-  selectedDate.value = date;
-  if (!dailyHabits.value[date]) {
-    updateDailyHabits();
-  }
-}
+};
 </script>
 
 <template>
   <div class="flex flex-col">
     <div class="mb-4">
-      <input
-        type="date"
-        v-model="selectedDate"
-        @change="selectDate(selectedDate)"
-        class="border p-2"
-      />
-      <p>{{ centerDate }}</p>
+      <p>{{ formattedCenterDate }}</p>
     </div>
     <div class="px-4 flex-grow overflow-y-auto pb-20">
       <ul class="min-h-0">
         <li
-          v-for="(habit, index) in currentDayHabits"
+          v-for="(habit, index) in habits"
           :key="index"
           class="bg-indigo-300 w-full rounded-lg px-3 py-4 mb-3 justify-between border-black flex flex-row items-center"
         >
           <div class="m-2 font-bold">{{ habit }}</div>
-          <button
-            class="bg-white rounded border-2 border-black m-1 p-1"
-            type="button"
-            @click="removeHabit(habit)"
-          >
-            Delete
-          </button>
         </li>
       </ul>
     </div>

@@ -2,23 +2,25 @@
 import { ref } from 'vue';
 import DropdownElement from './DropdownElement.vue';
 import useDropdown from './useDropdown';
-import useCalendarRouting from './calendarRouting';
+import useCalendarStore from '../../store/calendarStore';
 
 const { selected } = useDropdown();
 const calendar = ref(null);
-const { centerDate, moveToday } = useCalendarRouting();
+const calendarStore = useCalendarStore(); // Use the Pinia store
+
 function handleMoveToday() {
-  moveToday();
-  calendar.value.move(centerDate.value);
+  calendarStore.moveToday();
+  calendar.value.move(calendarStore.centerDate);
 }
 </script>
+
 <template>
   <div v-if="selected === 'Week'" class="max-w-screen-md">
     <VDatePicker
       :locale="{ firstDayOfWeek: 2 }"
       ref="calendar"
       expanded
-      v-model="centerDate"
+      v-model="calendarStore.centerDate"
       title-position="left"
       view="weekly"
     >
@@ -43,7 +45,7 @@ function handleMoveToday() {
     <VDatePicker
       :locale="{ firstDayOfWeek: 2 }"
       ref="calendar"
-      v-model="centerDate"
+      v-model="calendarStore.centerDate"
       title-position="left"
       expanded
     >
@@ -65,6 +67,7 @@ function handleMoveToday() {
     <DropdownElement />
   </div>
 </template>
+
 <style scoped>
 .todayButton {
   background-color: #232323;
