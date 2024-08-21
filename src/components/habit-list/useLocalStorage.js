@@ -48,10 +48,23 @@ export default function useLocalStorage() {
     }
   }
 
+  function completeHabit(date, habitText) {
+    const dayEntry = dailyHabits.value.find(entry => entry.date === date);
+    if (dayEntry) {
+      const habit = dayEntry.habits.find(h => h.text === habitText);
+      if (habit && habit.isCompleted === false) {
+        habit.isCompleted = true;
+      } else if (habit && habit.isCompleted === true) {
+        habit.isCompleted = false;
+      }
+    }
+  }
+
   return {
     habits,
     dailyHabits,
     addHabit,
     addDailyEntry,
+    completeHabit,
   };
 }

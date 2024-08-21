@@ -5,7 +5,9 @@ import useCalendarStore from '../../store/calendarStore';
 import useLocalStorage from './useLocalStorage';
 
 const calendarStore = useCalendarStore();
-const { dailyHabits, addHabit, addDailyEntry } = useLocalStorage();
+const activeColor = ref('#e2e6d1');
+const { dailyHabits, addHabit, addDailyEntry, completeHabit } =
+  useLocalStorage();
 
 const formattedCenterDate = computed(() => {
   const date = new Date(calendarStore.centerDate);
@@ -13,6 +15,8 @@ const formattedCenterDate = computed(() => {
 });
 
 const newHabit = ref('');
+const completeUndo = ref('Complete');
+const completeState = ref('Not Completed');
 
 const addNewHabit = () => {
   if (newHabit.value.trim()) {
@@ -36,6 +40,14 @@ const currentDateHabits = computed(() => {
   );
   return entry ? entry.habits : [];
 });
+
+const handleCompleteHabit = habitText => {
+  completeHabit(formattedCenterDate.value, habitText);
+  completeUndo.value = completeUndo.value === 'Complete' ? 'Undo' : 'Complete';
+  activeColor.value = activeColor.value === '#e2e6d1' ? '#d1e6d4' : '#e2e6d1';
+  completeState.value =
+    completeState.value === 'Not Completed' ? 'Completed' : 'Not Completed';
+};
 </script>
 
 <template>
@@ -49,8 +61,19 @@ const currentDateHabits = computed(() => {
           v-for="habit in currentDateHabits"
           :key="habit.text"
           class="bg-indigo-300 w-full rounded-lg px-3 py-4 mb-3 justify-between border-black flex flex-row items-center"
+          :style="{ backgroundColor: activeColor }"
         >
-          <div class="m-2 font-bold">{{ habit.text }}</div>
+          <div>
+            <div class="m-2 font-bold text-xl">{{ habit.text }}</div>
+            <div class="font-bold m-2 text-sm">{{ completeState }}</div>
+          </div>
+          <button
+            class="rounded-full p-1 border border-black bg-white"
+            type="button"
+            @click="handleCompleteHabit(habit.text)"
+          >
+            {{ completeUndo }}
+          </button>
         </li>
       </ul>
     </div>
