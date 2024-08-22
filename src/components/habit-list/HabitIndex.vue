@@ -3,6 +3,9 @@ import { computed, watch } from 'vue';
 import NewHabitElement from './NewHabitElement.vue';
 import useCalendarStore from '../../store/calendarStore';
 import useLocalStorage from './useLocalStorage';
+import HabitEditElement from './HabitEditElement.vue';
+import UndoIcon from '../../assets/icons/undo.svg';
+import CompleteIcon from '../../assets/icons/complete.svg';
 
 const calendarStore = useCalendarStore();
 const { dailyHabits, addDailyEntry, completeHabit, addHabit } =
@@ -38,8 +41,8 @@ const handleAddHabit = habitText => {
   addDailyEntry(formattedCenterDate.value);
 };
 
-const getCompleteButtonText = isCompleted =>
-  isCompleted ? 'Undo' : 'Complete';
+const getCompleteButtonIcon = isCompleted =>
+  isCompleted ? UndoIcon : CompleteIcon;
 const getHabitBackgroundColor = isCompleted =>
   isCompleted ? '#d1e6d4' : '#e2e6d1';
 const getCompleteStateText = isCompleted =>
@@ -64,31 +67,26 @@ const getCompleteStateText = isCompleted =>
               {{ getCompleteStateText(habit.isCompleted) }}
             </div>
           </div>
-          <div>
+          <div class="flex flex-row">
             <button
-              class="rounded-full p-1 border border-black bg-white hover:bg-slate-200"
+              class="rounded-full w-9 h-9 bg-white hover:bg-slate-200"
               type="button"
               @click="handleCompleteHabit(habit.text)"
             >
-              {{ getCompleteButtonText(habit.isCompleted) }}
+              <img
+                :src="getCompleteButtonIcon(habit.isCompleted)"
+                alt="Complete/Undo"
+                title="Comple/Undo"
+                class="w-5 h-5 mx-auto"
+              />
             </button>
-            <button
-              class="bg-black text-white p-1 rounded-full m-1 hover:bg-slate-500"
-              type="button"
-            >
-              Edit
-            </button>
+            <HabitEditElement />
           </div>
         </li>
       </ul>
     </div>
-    <div class="fixed bottom-0 left-0 right-0 py-3 new-habit">
+    <div class="fixed bottom-0 left-0 right-0 py-3">
       <NewHabitElement @add-habit="handleAddHabit" />
     </div>
   </div>
 </template>
-<style scoped>
-.new-habit {
-  background-color: #f8faed;
-}
-</style>

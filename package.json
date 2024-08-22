@@ -12,8 +12,11 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.22",
+    "@heroicons/vue": "^2.1.5",
     "@popperjs/core": "^2.11.8",
     "@vue/eslint-config-airbnb": "^8.0.0",
+    "bootstrap-icons": "^1.11.3",
     "pinia": "^2.2.2",
     "v-calendar": "^3.1.2",
     "vue": "^3.4.29",

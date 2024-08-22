@@ -50,7 +50,7 @@ calendarStore.setCenterDate(new Date(props.date));
                 name: 'day',
                 params: { date: new Date().toISOString().split('T')[0] },
               }"
-              class="todayButton hover:bg-slate-500 text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
+              class="today-button hover:bg-slate-500 text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
               @click="handleMoveToday"
             >
               Today
@@ -85,7 +85,7 @@ calendarStore.setCenterDate(new Date(props.date));
           </div>
         </template>
       </VDatePicker>
-      <DropdownElement />
+      <DropdownElement class="z-50" />
     </div>
   </div>
 </template>
