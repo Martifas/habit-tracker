@@ -39,7 +39,7 @@ function handleDateChange(newDate) {
               name: 'day',
               params: { date: new Date().toISOString().split('T')[0] },
             }"
-            class="todayButton text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
+            class="todayButton hover:bg-slate-500 text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
             @click="handleMoveToday"
           >
             Today
@@ -81,8 +81,5 @@ function handleDateChange(newDate) {
 <style scoped>
 .todayButton {
   background-color: #232323;
-}
-.todayButton:hover {
-  background-color: #8f8c8c;
 }
 </style>

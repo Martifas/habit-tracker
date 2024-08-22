@@ -64,13 +64,21 @@ const getCompleteStateText = isCompleted =>
               {{ getCompleteStateText(habit.isCompleted) }}
             </div>
           </div>
-          <button
-            class="rounded-full p-1 border border-black bg-white"
-            type="button"
-            @click="handleCompleteHabit(habit.text)"
-          >
-            {{ getCompleteButtonText(habit.isCompleted) }}
-          </button>
+          <div>
+            <button
+              class="rounded-full p-1 border border-black bg-white hover:bg-slate-200"
+              type="button"
+              @click="handleCompleteHabit(habit.text)"
+            >
+              {{ getCompleteButtonText(habit.isCompleted) }}
+            </button>
+            <button
+              class="bg-black text-white p-1 rounded-full m-1 hover:bg-slate-500"
+              type="button"
+            >
+              Edit
+            </button>
+          </div>
         </li>
       </ul>
     </div>
