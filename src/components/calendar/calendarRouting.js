@@ -31,7 +31,7 @@ export default function useCalendarRouting() {
         if (
           newDate.toString() !== 'Invalid Date' &&
           newDate.toISOString().split('T')[0] !==
-            calendarStore.centerDate.value.toISOString().split('T')[0]
+            calendarStore.centerDate.toISOString().split('T')[0]
         ) {
           calendarStore.setCenterDate(newDate);
         }

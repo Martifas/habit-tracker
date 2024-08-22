@@ -2,8 +2,9 @@
 import { ref } from 'vue';
 import DropdownElement from './DropdownElement.vue';
 import useDropdown from './useDropdown';
-import useCalendarRouting from './calendarRouting';
 import useCalendarStore from '../../store/calendarStore';
+import useCalendarRouting from './calendarRouting';
+
 
 const { selected } = useDropdown();
 const calendar = ref(null);
@@ -59,7 +60,20 @@ function handleDateChange(newDate) {
       title-position="left"
       expanded
     >
-      <!-- ... (footer template remains the same) ... -->
+      <template #footer>
+        <div class="w-full px-4 pb-3">
+          <router-link
+            :to="{
+              name: 'day',
+              params: { date: new Date().toISOString().split('T')[0] },
+            }"
+            class="todayButton text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
+            @click="handleMoveToday"
+          >
+            Today
+          </router-link>
+        </div>
+      </template>
     </VDatePicker>
     <DropdownElement />
   </div>
