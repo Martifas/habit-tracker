@@ -15,6 +15,27 @@ const router = createRouter({
       name: 'day',
       component: CalendarIndex,
       props: true,
+      beforeEnter: (to, from, next) => {
+        const dateParam = to.params.date;
+        if (dateParam) {
+          const inputDate = new Date(dateParam);
+          const today = new Date();
+
+          if (Number.isNaN(inputDate.getTime())) {
+            // Invalid date format
+            next({ name: 'home' });
+          } else if (inputDate > today) {
+            // Future date
+            next({ name: 'home' });
+          } else {
+            // Valid date
+            next();
+          }
+        } else {
+          // No date parameter, allow navigation
+          next();
+        }
+      },
     },
   ],
 });
