@@ -1,29 +1,17 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { computed, watch } from 'vue';
 import NewHabitElement from './NewHabitElement.vue';
 import useCalendarStore from '../../store/calendarStore';
 import useLocalStorage from './useLocalStorage';
 
 const calendarStore = useCalendarStore();
-const activeColor = ref('#e2e6d1');
-const { dailyHabits, addHabit, addDailyEntry, completeHabit } =
+const { dailyHabits, addDailyEntry, completeHabit, addHabit } =
   useLocalStorage();
 
 const formattedCenterDate = computed(() => {
   const date = new Date(calendarStore.centerDate);
   return date.toISOString().split('T')[0];
 });
-
-const newHabit = ref('');
-const completeUndo = ref('Complete');
-const completeState = ref('Not Completed');
-
-const addNewHabit = () => {
-  if (newHabit.value.trim()) {
-    addHabit(newHabit.value.trim());
-    newHabit.value = '';
-  }
-};
 
 // Watch for changes in the center date and add a new daily entry when it changes
 watch(formattedCenterDate, newDate => {
@@ -43,50 +31,56 @@ const currentDateHabits = computed(() => {
 
 const handleCompleteHabit = habitText => {
   completeHabit(formattedCenterDate.value, habitText);
-  completeUndo.value = completeUndo.value === 'Complete' ? 'Undo' : 'Complete';
-  activeColor.value = activeColor.value === '#e2e6d1' ? '#d1e6d4' : '#e2e6d1';
-  completeState.value =
-    completeState.value === 'Not Completed' ? 'Completed' : 'Not Completed';
 };
+
+const handleAddHabit = habitText => {
+  addHabit(habitText);
+  addDailyEntry(formattedCenterDate.value);
+};
+
+const getCompleteButtonText = isCompleted =>
+  isCompleted ? 'Undo' : 'Complete';
+const getHabitBackgroundColor = isCompleted =>
+  isCompleted ? '#d1e6d4' : '#e2e6d1';
+const getCompleteStateText = isCompleted =>
+  isCompleted ? 'Completed' : 'Not Completed';
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <div class="mb-4">
-      <p>{{ formattedCenterDate }}</p>
-    </div>
-    <div class="px-4 flex-grow overflow-y-auto pb-20">
+  <div class="flex flex-col max-w-4xl mx-auto">
+    <div class="flex-grow overflow-y-auto pb-20">
       <ul class="min-h-0">
         <li
           v-for="habit in currentDateHabits"
           :key="habit.text"
-          class="bg-indigo-300 w-full rounded-lg px-3 py-4 mb-3 justify-between border-black flex flex-row items-center"
-          :style="{ backgroundColor: activeColor }"
+          class="w-full rounded-lg px-3 py-4 mb-3 justify-between border-black flex flex-row items-center"
+          :style="{
+            backgroundColor: getHabitBackgroundColor(habit.isCompleted),
+          }"
         >
           <div>
             <div class="m-2 font-bold text-xl">{{ habit.text }}</div>
-            <div class="font-bold m-2 text-sm">{{ completeState }}</div>
+            <div class="font-bold m-2 text-sm">
+              {{ getCompleteStateText(habit.isCompleted) }}
+            </div>
           </div>
           <button
             class="rounded-full p-1 border border-black bg-white"
             type="button"
             @click="handleCompleteHabit(habit.text)"
           >
-            {{ completeUndo }}
+            {{ getCompleteButtonText(habit.isCompleted) }}
           </button>
         </li>
       </ul>
     </div>
-    <div class="fixed bottom-0 left-0 right-0 p-3">
-      <form class="flex flex-col items-center" @submit.prevent="addNewHabit">
-        <input
-          v-model="newHabit"
-          class="text-center border border-gray-300 p-2 w-full mb-4"
-          required
-          placeholder="New Habit"
-        />
-        <NewHabitElement />
-      </form>
+    <div class="fixed bottom-0 left-0 right-0 py-3 new-habit">
+      <NewHabitElement @add-habit="handleAddHabit" />
     </div>
   </div>
 </template>
+<style scoped>
+.new-habit {
+  background-color: #f8faed;
+}
+</style>

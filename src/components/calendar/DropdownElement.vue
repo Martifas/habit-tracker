@@ -16,6 +16,7 @@ const { selected, showDropdown, toggleDropdown, selectView } = useDropdown();
 .view-select {
   position: relative;
   text-align: right;
+  background-color: #f8faed;
 }
 
 .view-select > a:first-child {
@@ -24,7 +25,6 @@ const { selected, showDropdown, toggleDropdown, selectView } = useDropdown();
 
 .view-select a {
   color: inherit;
-  background-color: #f8faed;
 }
 
 .dropdown {

@@ -15,7 +15,7 @@ function handleMoveToday() {
 </script>
 
 <template>
-  <div v-if="selected === 'Week'" class="max-w-screen-md">
+  <div v-if="selected === 'Week'">
     <VDatePicker
       :locale="{ firstDayOfWeek: 2 }"
       ref="calendar"
