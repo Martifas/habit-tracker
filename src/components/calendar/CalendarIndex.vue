@@ -5,7 +5,6 @@ import useDropdown from './useDropdown';
 import useCalendarStore from '../../store/calendarStore';
 import useCalendarRouting from './calendarRouting';
 
-
 const { selected } = useDropdown();
 const calendar = ref(null);
 const calendarStore = useCalendarStore();
