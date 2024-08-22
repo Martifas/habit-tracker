@@ -1,16 +1,12 @@
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { ref } from 'vue';
 
 const useCalendarStore = defineStore('calendar', () => {
-  const router = useRouter();
-  const route = useRoute();
-  const centerDate = ref(new Date(route.params.date || new Date()));
+  const centerDate = ref(new Date());
 
-  watch(centerDate, newDate => {
-    const dateString = newDate.toISOString().split('T')[0];
-    router.push({ name: 'day', params: { date: dateString } });
-  });
+  function setCenterDate(date) {
+    centerDate.value = new Date(date);
+  }
 
   function moveToday() {
     centerDate.value = new Date();
@@ -18,6 +14,7 @@ const useCalendarStore = defineStore('calendar', () => {
 
   return {
     centerDate,
+    setCenterDate,
     moveToday,
   };
 });
