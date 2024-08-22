@@ -17,6 +17,7 @@ function handleMoveToday() {
 <template>
   <div v-if="selected === 'Week'">
     <VDatePicker
+      :max-date="new Date()"
       :locale="{ firstDayOfWeek: 2 }"
       ref="calendar"
       expanded
@@ -43,6 +44,7 @@ function handleMoveToday() {
   </div>
   <div v-else class="max-w-screen-md">
     <VDatePicker
+      :max-date="new Date()"
       :locale="{ firstDayOfWeek: 2 }"
       ref="calendar"
       v-model="calendarStore.centerDate"

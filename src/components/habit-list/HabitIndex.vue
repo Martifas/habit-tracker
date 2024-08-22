@@ -47,8 +47,8 @@ const getCompleteStateText = isCompleted =>
 </script>
 
 <template>
-  <div class="flex flex-col max-w-4xl mx-auto">
-    <div class="flex-grow overflow-y-auto pb-20">
+  <div class="flex flex-col max-w-4xl mx-auto pb-5">
+    <div class="flex-grow overflow-y-auto">
       <ul class="min-h-0">
         <li
           v-for="habit in currentDateHabits"

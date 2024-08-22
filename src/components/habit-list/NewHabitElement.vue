@@ -34,6 +34,7 @@ const toggleInput = () => {
         @keyup.enter="addNewHabit"
       />
     </div>
+
     <button
       type="button"
       @click="toggleInput"
