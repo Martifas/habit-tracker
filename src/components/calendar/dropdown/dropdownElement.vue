@@ -18,12 +18,17 @@ const { selected, showDropdown, toggleDropdown, selectView } = useDropdown();
   text-align: right;
 }
 
-.view-select > a:first-child {
-  color: hsl(160deg 100% 37% / 100%);
-}
-
 .view-select a {
   color: inherit;
+}
+
+.dropdown a {
+  display: block;
+  padding: 5px 10px;
+}
+
+.view-select > a:first-child {
+  color: hsl(160deg 100% 37% / 100%);
 }
 
 .dropdown {
@@ -33,11 +38,6 @@ const { selected, showDropdown, toggleDropdown, selectView } = useDropdown();
   background-color: white;
   border: 1px solid #ccc;
   padding: 5px 0;
-}
-
-.dropdown a {
-  display: block;
-  padding: 5px 10px;
 }
 
 .dropdown a:hover {

@@ -19,10 +19,6 @@ const { selected, showDropdown, toggleDropdown, selectView } = useDropdown();
   background-color: #f8faed;
 }
 
-.view-select > a:first-child {
-  color: hsl(160deg 100% 37% / 100%);
-}
-
 .view-select a {
   color: inherit;
 }
@@ -39,6 +35,10 @@ const { selected, showDropdown, toggleDropdown, selectView } = useDropdown();
 .dropdown a {
   display: block;
   padding: 5px 10px;
+}
+
+.view-select > a:first-child {
+  color: hsl(160deg 100% 37% / 100%);
 }
 
 .dropdown a:hover {

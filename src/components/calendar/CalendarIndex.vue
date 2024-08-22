@@ -5,6 +5,13 @@ import useDropdown from './useDropdown';
 import useCalendarStore from '../../store/calendarStore';
 import useCalendarRouting from './calendarRouting';
 
+const props = defineProps({
+  date: {
+    type: String,
+    default: () => new Date().toISOString().split('T')[0],
+  },
+});
+
 const { selected } = useDropdown();
 const calendar = ref(null);
 const calendarStore = useCalendarStore();
@@ -18,68 +25,73 @@ function handleMoveToday() {
 function handleDateChange(newDate) {
   calendarStore.setCenterDate(newDate);
 }
+
+// Initialize the calendar store with the prop date
+calendarStore.setCenterDate(new Date(props.date));
 </script>
 
 <template>
-  <div v-if="selected === 'Week'">
-    <VDatePicker
-      :max-date="new Date()"
-      :locale="{ firstDayOfWeek: 2 }"
-      ref="calendar"
-      expanded
-      :model-value="calendarStore.centerDate"
-      @update:model-value="handleDateChange"
-      title-position="left"
-      view="weekly"
-    >
-      <template #footer>
-        <div class="w-full px-4 pb-3">
-          <router-link
-            :to="{
-              name: 'day',
-              params: { date: new Date().toISOString().split('T')[0] },
-            }"
-            class="todayButton hover:bg-slate-500 text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
-            @click="handleMoveToday"
-          >
-            Today
-          </router-link>
-        </div>
-      </template>
-    </VDatePicker>
-    <DropdownElement />
-  </div>
-  <div v-else class="max-w-screen-md">
-    <VDatePicker
-      :max-date="new Date()"
-      :locale="{ firstDayOfWeek: 2 }"
-      ref="calendar"
-      :model-value="calendarStore.centerDate"
-      @update:model-value="handleDateChange"
-      title-position="left"
-      expanded
-    >
-      <template #footer>
-        <div class="w-full px-4 pb-3">
-          <router-link
-            :to="{
-              name: 'day',
-              params: { date: new Date().toISOString().split('T')[0] },
-            }"
-            class="todayButton text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
-            @click="handleMoveToday"
-          >
-            Today
-          </router-link>
-        </div>
-      </template>
-    </VDatePicker>
-    <DropdownElement />
+  <div>
+    <div v-if="selected === 'Week'">
+      <VDatePicker
+        :max-date="new Date()"
+        :locale="{ firstDayOfWeek: 2 }"
+        ref="calendar"
+        expanded
+        :model-value="calendarStore.centerDate"
+        @update:model-value="handleDateChange"
+        title-position="left"
+        view="weekly"
+      >
+        <template #footer>
+          <div class="w-full px-4 pb-3">
+            <router-link
+              :to="{
+                name: 'day',
+                params: { date: new Date().toISOString().split('T')[0] },
+              }"
+              class="todayButton hover:bg-slate-500 text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
+              @click="handleMoveToday"
+            >
+              Today
+            </router-link>
+          </div>
+        </template>
+      </VDatePicker>
+      <DropdownElement />
+    </div>
+    <div v-else class="max-w-screen-md">
+      <VDatePicker
+        :max-date="new Date()"
+        :locale="{ firstDayOfWeek: 2 }"
+        ref="calendar"
+        :model-value="calendarStore.centerDate"
+        @update:model-value="handleDateChange"
+        title-position="left"
+        expanded
+      >
+        <template #footer>
+          <div class="w-full px-4 pb-3">
+            <router-link
+              :to="{
+                name: 'day',
+                params: { date: new Date().toISOString().split('T')[0] },
+              }"
+              class="today-button text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
+              @click="handleMoveToday"
+            >
+              Today
+            </router-link>
+          </div>
+        </template>
+      </VDatePicker>
+      <DropdownElement />
+    </div>
   </div>
 </template>
 
 <style scoped>
-.todayButton {
+.today-button {
   background-color: #232323;
 }
 </style>

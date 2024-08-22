@@ -38,7 +38,7 @@ const toggleInput = () => {
     <button
       type="button"
       @click="toggleInput"
-      class="NewHabitButton text-white py-2 px-5 rounded-full inline-block text-center w-4/5 lg:w-3/5"
+      class="new-habit-button text-white py-2 px-5 rounded-full inline-block text-center w-4/5 lg:w-3/5"
     >
       {{ isInputVisible ? '+ Add Habit' : '+ New Habit' }}
     </button>
@@ -46,7 +46,7 @@ const toggleInput = () => {
 </template>
 
 <style scoped>
-.NewHabitButton {
+.new-habit-button {
   background-color: #50a65c;
   color: #232323;
 }
