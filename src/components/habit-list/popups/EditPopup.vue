@@ -1,18 +1,22 @@
 <script setup>
-import { defineProps, defineEmits, toRef, ref } from 'vue';
+import { toRef, ref } from 'vue';
 
 const props = defineProps({
   show: Boolean,
+  initialValue: {
+    type: String,
+    default: '',
+  },
 });
 
 const emit = defineEmits(['update:show', 'confirm']);
 
 const showRef = toRef(props, 'show');
-const inputValue = ref('');
+const inputValue = ref(props.initialValue);
 
 function closePopup() {
   emit('update:show', false);
-  inputValue.value = '';
+  inputValue.value = props.initialValue;
 }
 
 function confirmChange() {

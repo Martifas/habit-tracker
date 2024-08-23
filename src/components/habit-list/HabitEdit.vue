@@ -3,7 +3,9 @@ import { ref } from 'vue';
 import DeleteIcon from '../../assets/icons/delete.svg';
 import StopIcon from '../../assets/icons/stop.svg';
 import EditIcon from '../../assets/icons/edit.svg';
-import EditPopup from './EditPopup.vue';
+import EditPopup from './popups/EditPopup.vue';
+import StopPopup from './popups/StopPopup.vue';
+import DeletePopup from './popups/DeletePopup.vue';
 
 const props = defineProps({
   habit: {
@@ -14,23 +16,23 @@ const props = defineProps({
 
 const emit = defineEmits(['update-habit-name']);
 
-const showPopup = ref(false);
-
-function togglePopup() {
-  showPopup.value = !showPopup.value;
-}
+const showEditPopup = ref(false);
+const showStopPopup = ref(false);
+const showDeletePopup = ref(false);
 
 function handleConfirm(newName) {
   if (newName && newName !== props.habit.text) {
     emit('update-habit-name', props.habit.id, newName);
   }
-  showPopup.value = false;
+  showEditPopup.value = false;
 }
 </script>
 
 <template>
+  <StopPopup v-model:show="showStopPopup" />
+  <DeletePopup v-model:show="showDeletePopup" />
   <EditPopup
-    v-model:show="showPopup"
+    v-model:show="showEditPopup"
     :initial-value="habit.text"
     @confirm="handleConfirm"
   />
@@ -38,7 +40,7 @@ function handleConfirm(newName) {
     <button
       class="rounded-full size-9 bg-white hover:bg-blue-400"
       type="button"
-      @click="togglePopup"
+      @click="showEditPopup = true"
     >
       <img
         :src="EditIcon"
@@ -50,6 +52,7 @@ function handleConfirm(newName) {
     <button
       class="rounded-full size-9 bg-white hover:bg-yellow-400"
       type="button"
+      @click="showStopPopup = true"
     >
       <img
         :src="StopIcon"
@@ -58,7 +61,11 @@ function handleConfirm(newName) {
         class="size-6 mx-auto"
       />
     </button>
-    <button class="rounded-full size-9 bg-white hover:bg-red-400" type="button">
+    <button
+      class="rounded-full size-9 bg-white hover:bg-red-400"
+      type="button"
+      @click="showDeletePopup = true"
+    >
       <img
         :src="DeleteIcon"
         alt="Delete habit"
