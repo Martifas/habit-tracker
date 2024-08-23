@@ -67,11 +67,28 @@ export default function useLocalStorage() {
     }
   }
 
+  function updateHabitName(habitId, newName) {
+    // Update in habits array
+    const habit = habits.value.find(h => h.id === habitId);
+    if (habit) {
+      habit.text = newName;
+    }
+
+    // Update in dailyHabits array
+    dailyHabits.value.forEach(entry => {
+      const habitInDaily = entry.habits.find(h => h.id === habitId);
+      if (habitInDaily) {
+        habitInDaily.text = newName;
+      }
+    });
+  }
+
   return {
     habits,
     dailyHabits,
     addHabit,
     addDailyEntry,
     completeHabit,
+    updateHabitName,
   };
 }

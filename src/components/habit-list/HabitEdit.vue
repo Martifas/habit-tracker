@@ -3,7 +3,16 @@ import { ref } from 'vue';
 import DeleteIcon from '../../assets/icons/delete.svg';
 import StopIcon from '../../assets/icons/stop.svg';
 import EditIcon from '../../assets/icons/edit.svg';
-import EditPopup from './EditPopup.vue'; // Import the new component
+import EditPopup from './EditPopup.vue';
+
+const props = defineProps({
+  habit: {
+    type: Object,
+    required: true,
+  },
+});
+
+const emit = defineEmits(['update-habit-name']);
 
 const showPopup = ref(false);
 
@@ -11,14 +20,20 @@ function togglePopup() {
   showPopup.value = !showPopup.value;
 }
 
-function handleConfirm() {
-  // Handle the confirmation logic here
-  console.log('Confirmed');
+function handleConfirm(newName) {
+  if (newName && newName !== props.habit.text) {
+    emit('update-habit-name', props.habit.id, newName);
+  }
+  showPopup.value = false;
 }
 </script>
 
 <template>
-  <EditPopup v-model:show="showPopup" @confirm="handleConfirm" />
+  <EditPopup
+    v-model:show="showPopup"
+    :initial-value="habit.text"
+    @confirm="handleConfirm"
+  />
   <div class="flex space-x-1">
     <button
       class="rounded-full size-9 bg-white hover:bg-blue-400"

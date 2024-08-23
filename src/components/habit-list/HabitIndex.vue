@@ -8,7 +8,7 @@ import UndoIcon from '../../assets/icons/undo.svg';
 import CompleteIcon from '../../assets/icons/complete.svg';
 
 const calendarStore = useCalendarStore();
-const { dailyHabits, addDailyEntry, completeHabit, addHabit } =
+const { dailyHabits, addDailyEntry, completeHabit, addHabit, updateHabitName } =
   useLocalStorage();
 
 const formattedCenterDate = computed(() => {
@@ -32,13 +32,17 @@ const currentDateHabits = computed(() => {
   return entry ? entry.habits : [];
 });
 
-const handleCompleteHabit = habitText => {
-  completeHabit(formattedCenterDate.value, habitText);
+const handleCompleteHabit = habitId => {
+  completeHabit(formattedCenterDate.value, habitId);
 };
 
 const handleAddHabit = habitText => {
   addHabit(habitText);
   addDailyEntry(formattedCenterDate.value);
+};
+
+const handleUpdateHabitName = (habitId, newName) => {
+  updateHabitName(habitId, newName);
 };
 
 const getCompleteButtonIcon = isCompleted =>
@@ -55,7 +59,7 @@ const getCompleteStateText = isCompleted =>
       <ul class="min-h-0">
         <li
           v-for="habit in currentDateHabits"
-          :key="habit.text"
+          :key="habit.id"
           class="w-full rounded-lg px-3 py-4 mb-3 justify-between border-black flex flex-row items-center relative"
           :style="{
             backgroundColor: getHabitBackgroundColor(habit.isCompleted),
@@ -71,16 +75,19 @@ const getCompleteStateText = isCompleted =>
             <button
               class="rounded-full size-9 bg-white hover:bg-green-300"
               type="button"
-              @click="handleCompleteHabit(habit.text)"
+              @click="handleCompleteHabit(habit.id)"
             >
               <img
                 :src="getCompleteButtonIcon(habit.isCompleted)"
                 alt="Complete/Undo"
-                title="Comple/Undo"
+                title="Complete/Undo"
                 class="size-7 mx-auto"
               />
             </button>
-            <HabitEdit />
+            <HabitEdit
+              :habit="habit"
+              @update-habit-name="handleUpdateHabitName"
+            />
           </div>
         </li>
       </ul>
