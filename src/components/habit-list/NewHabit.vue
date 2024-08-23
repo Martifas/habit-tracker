@@ -50,4 +50,7 @@ const toggleInput = () => {
   background-color: #50a65c;
   color: #232323;
 }
+.new-habit-button:hover {
+  background-color: #68c474;
+}
 </style>

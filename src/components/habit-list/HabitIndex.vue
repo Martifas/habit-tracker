@@ -1,9 +1,9 @@
 <script setup>
 import { computed, watch } from 'vue';
-import NewHabitElement from './NewHabitElement.vue';
+import NewHabitElement from './NewHabit.vue';
 import useCalendarStore from '../../store/calendarStore';
 import useLocalStorage from './useLocalStorage';
-import HabitEditElement from './HabitEditElement.vue';
+import HabitEditElement from './HabitEdit.vue';
 import UndoIcon from '../../assets/icons/undo.svg';
 import CompleteIcon from '../../assets/icons/complete.svg';
 
@@ -67,9 +67,9 @@ const getCompleteStateText = isCompleted =>
               {{ getCompleteStateText(habit.isCompleted) }}
             </div>
           </div>
-          <div class="flex flex-row">
+          <div class="flex flex-row space-x-1">
             <button
-              class="rounded-full w-9 h-9 bg-white hover:bg-slate-200"
+              class="rounded-full size-9 bg-white hover:bg-green-300"
               type="button"
               @click="handleCompleteHabit(habit.text)"
             >
@@ -77,7 +77,7 @@ const getCompleteStateText = isCompleted =>
                 :src="getCompleteButtonIcon(habit.isCompleted)"
                 alt="Complete/Undo"
                 title="Comple/Undo"
-                class="w-5 h-5 mx-auto"
+                class="size-7 mx-auto"
               />
             </button>
             <HabitEditElement />
