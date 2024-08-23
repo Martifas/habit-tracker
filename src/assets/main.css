@@ -15,6 +15,7 @@ a,
 
 body {
   background-color: #f8faed;
+  font-family: Montserrat, system-ui;
 }
 
 @media (hover: hover) {
