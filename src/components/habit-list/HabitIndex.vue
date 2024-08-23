@@ -3,7 +3,7 @@ import { computed, watch } from 'vue';
 import NewHabitElement from './NewHabit.vue';
 import useCalendarStore from '../../store/calendarStore';
 import useLocalStorage from './useLocalStorage';
-import HabitEditElement from './HabitEdit.vue';
+import HabitEdit from './HabitEdit.vue';
 import UndoIcon from '../../assets/icons/undo.svg';
 import CompleteIcon from '../../assets/icons/complete.svg';
 
@@ -56,7 +56,7 @@ const getCompleteStateText = isCompleted =>
         <li
           v-for="habit in currentDateHabits"
           :key="habit.text"
-          class="w-full rounded-lg px-3 py-4 mb-3 justify-between border-black flex flex-row items-center"
+          class="w-full rounded-lg px-3 py-4 mb-3 justify-between border-black flex flex-row items-center relative"
           :style="{
             backgroundColor: getHabitBackgroundColor(habit.isCompleted),
           }"
@@ -80,7 +80,7 @@ const getCompleteStateText = isCompleted =>
                 class="size-7 mx-auto"
               />
             </button>
-            <HabitEditElement />
+            <HabitEdit />
           </div>
         </li>
       </ul>
