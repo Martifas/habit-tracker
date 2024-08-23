@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 import HabitIndex from './components/habit-list/HabitIndex.vue';
-import ErrorPopup from './components/calendar/ErrorPopup.vue';
+import ErrorPopup from './components/popups/ErrorPopup.vue';
 
 const route = useRoute();
 const errorMessage = ref('');
@@ -24,16 +24,19 @@ watch(
 <template>
   <div class="w-full md:w-4/5 lg:w-3/5 mx-auto">
     <ErrorPopup v-if="errorMessage" :message="errorMessage" />
-    <header>
-      <div>Hello</div>
-    </header>
     <div>
-      <div class="sticky top-0">
-        <RouterView />
-      </div>
-      <div>
+      <header class="sticky top-0 z-50">
+        <RouterView class="pb-3" />
+      </header>
+      <main>
         <HabitIndex />
-      </div>
+      </main>
     </div>
   </div>
 </template>
+
+<style scoped>
+.sticky {
+  background-color: #f8faed;
+}
+</style>

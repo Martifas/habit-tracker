@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
-import DropdownElement from './DropdownElement.vue';
-import useDropdown from './useDropdown';
+import DropdownElement from './dropdown/DropdownIndex.vue';
+import useDropdown from './dropdown/useDropdown';
 import useCalendarStore from '../../store/calendarStore';
 import useCalendarRouting from './calendarRouting';
 
@@ -32,6 +32,7 @@ calendarStore.setCenterDate(new Date(props.date));
 
 <template>
   <div>
+    <DropdownElement class="py-1" aria-label="Select calendar view" />
     <div v-if="selected === 'Week'">
       <VDatePicker
         :max-date="new Date()"
@@ -42,6 +43,7 @@ calendarStore.setCenterDate(new Date(props.date));
         @update:model-value="handleDateChange"
         title-position="left"
         view="weekly"
+        aria-label="Weekly calendar"
       >
         <template #footer>
           <div class="w-full px-4 pb-3">
@@ -52,13 +54,13 @@ calendarStore.setCenterDate(new Date(props.date));
               }"
               class="today-button hover:bg-slate-500 text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
               @click="handleMoveToday"
+              aria-label="Go to today's date"
             >
               Today
             </router-link>
           </div>
         </template>
       </VDatePicker>
-      <DropdownElement />
     </div>
     <div v-else class="max-w-screen-md">
       <VDatePicker
@@ -69,6 +71,7 @@ calendarStore.setCenterDate(new Date(props.date));
         @update:model-value="handleDateChange"
         title-position="left"
         expanded
+        aria-label="Monthly calendar"
       >
         <template #footer>
           <div class="w-full px-4 pb-3">
@@ -79,13 +82,13 @@ calendarStore.setCenterDate(new Date(props.date));
               }"
               class="today-button text-white font-bold w-full px-3 py-1 rounded-md inline-block text-center"
               @click="handleMoveToday"
+              aria-label="Go to today's date"
             >
               Today
             </router-link>
           </div>
         </template>
       </VDatePicker>
-      <DropdownElement class="z-50" />
     </div>
   </div>
 </template>

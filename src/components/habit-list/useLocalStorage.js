@@ -6,6 +6,7 @@ export default function useLocalStorage() {
     JSON.parse(localStorage.getItem('dailyHabits')) || [],
   );
 
+  // Add a new habit to all existing daily entries
   function updateDailyHabitsWithNewHabit(newHabit) {
     dailyHabits.value.forEach(entry => {
       if (!entry.habits.some(h => h.id === newHabit.id)) {
@@ -18,15 +19,27 @@ export default function useLocalStorage() {
     });
   }
 
+  // Remove daily entries with empty habit arrays
+  function cleanupEmptyDailyEntries() {
+    dailyHabits.value = dailyHabits.value.filter(
+      entry => entry.habits.length > 0,
+    );
+  }
+
+  // Watch for changes in habits, update localStorage and dailyHabits
   watch(
     habits,
     newHabits => {
       localStorage.setItem('habits', JSON.stringify(newHabits));
-      updateDailyHabitsWithNewHabit(newHabits[newHabits.length - 1]);
+      if (newHabits.length > 0) {
+        updateDailyHabitsWithNewHabit(newHabits[newHabits.length - 1]);
+      }
+      cleanupEmptyDailyEntries();
     },
     { deep: true },
   );
 
+  // Watch for changes in dailyHabits and update localStorage
   watch(
     dailyHabits,
     newDailyHabits => {
@@ -35,6 +48,7 @@ export default function useLocalStorage() {
     { deep: true },
   );
 
+  // Add a new habit to the habits list
   function addHabit(habitText) {
     const newId =
       habits.value.length > 0
@@ -43,6 +57,7 @@ export default function useLocalStorage() {
     habits.value.push({ id: newId, text: habitText });
   }
 
+  // Add a new daily entry for a specific date
   function addDailyEntry(date) {
     const existingEntry = dailyHabits.value.find(entry => entry.date === date);
     if (!existingEntry) {
@@ -57,6 +72,7 @@ export default function useLocalStorage() {
     }
   }
 
+  // Toggle the completion status of a habit for a specific date
   function completeHabit(date, habitId) {
     const dayEntry = dailyHabits.value.find(entry => entry.date === date);
     if (dayEntry) {
@@ -67,20 +83,38 @@ export default function useLocalStorage() {
     }
   }
 
+  // Update the name of a habit in both habits and dailyHabits
   function updateHabitName(habitId, newName) {
-    // Update in habits array
     const habit = habits.value.find(h => h.id === habitId);
     if (habit) {
       habit.text = newName;
     }
-
-    // Update in dailyHabits array
     dailyHabits.value.forEach(entry => {
       const habitInDaily = entry.habits.find(h => h.id === habitId);
       if (habitInDaily) {
         habitInDaily.text = newName;
       }
     });
+  }
+
+  // Mark a habit as stopped and remove it from the active habits list
+  function stopHabit(habitId) {
+    const habitIndex = habits.value.findIndex(h => h.id === habitId);
+    if (habitIndex !== -1) {
+      habits.value[habitIndex] = { ...habits.value[habitIndex], stopped: true };
+    }
+    habits.value = habits.value.filter(h => h.id !== habitId);
+    cleanupEmptyDailyEntries();
+  }
+
+  // Remove a habit from both habits and dailyHabits
+  function deleteHabit(habitId) {
+    habits.value = habits.value.filter(h => h.id !== habitId);
+    dailyHabits.value = dailyHabits.value.map(entry => ({
+      ...entry,
+      habits: entry.habits.filter(h => h.id !== habitId),
+    }));
+    cleanupEmptyDailyEntries();
   }
 
   return {
@@ -90,5 +124,7 @@ export default function useLocalStorage() {
     addDailyEntry,
     completeHabit,
     updateHabitName,
+    stopHabit,
+    deleteHabit,
   };
 }
