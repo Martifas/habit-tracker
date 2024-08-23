@@ -8,8 +8,12 @@ export default function useLocalStorage() {
 
   function updateDailyHabitsWithNewHabit(newHabit) {
     dailyHabits.value.forEach(entry => {
-      if (!entry.habits.some(h => h.text === newHabit)) {
-        entry.habits.push({ text: newHabit, isCompleted: false });
+      if (!entry.habits.some(h => h.id === newHabit.id)) {
+        entry.habits.push({
+          id: newHabit.id,
+          text: newHabit.text,
+          isCompleted: false,
+        });
       }
     });
   }
@@ -32,7 +36,11 @@ export default function useLocalStorage() {
   );
 
   function addHabit(habitText) {
-    habits.value.push(habitText);
+    const newId =
+      habits.value.length > 0
+        ? Math.max(...habits.value.map(h => h.id)) + 1
+        : 0;
+    habits.value.push({ id: newId, text: habitText });
   }
 
   function addDailyEntry(date) {
@@ -41,21 +49,20 @@ export default function useLocalStorage() {
       dailyHabits.value.push({
         date,
         habits: habits.value.map(habit => ({
-          text: habit,
+          id: habit.id,
+          text: habit.text,
           isCompleted: false,
         })),
       });
     }
   }
 
-  function completeHabit(date, habitText) {
+  function completeHabit(date, habitId) {
     const dayEntry = dailyHabits.value.find(entry => entry.date === date);
     if (dayEntry) {
-      const habit = dayEntry.habits.find(h => h.text === habitText);
-      if (habit && habit.isCompleted === false) {
-        habit.isCompleted = true;
-      } else if (habit && habit.isCompleted === true) {
-        habit.isCompleted = false;
+      const habit = dayEntry.habits.find(h => h.id === habitId);
+      if (habit) {
+        habit.isCompleted = !habit.isCompleted;
       }
     }
   }
