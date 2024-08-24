@@ -54,7 +54,7 @@ export default function useLocalStorage() {
       habits.value.length > 0
         ? Math.max(...habits.value.map(h => h.id)) + 1
         : 0;
-    habits.value.push({ id: newId, text: habitText });
+    habits.value.push({ id: newId, text: habitText, createdAt: new Date().toISOString() });
   }
 
   // Add a new daily entry for a specific date
@@ -63,11 +63,13 @@ export default function useLocalStorage() {
     if (!existingEntry) {
       dailyHabits.value.push({
         date,
-        habits: habits.value.map(habit => ({
-          id: habit.id,
-          text: habit.text,
-          isCompleted: false,
-        })),
+        habits: habits.value
+          .filter(habit => !habit.stoppedAt || new Date(habit.stoppedAt) > new Date(date))
+          .map(habit => ({
+            id: habit.id,
+            text: habit.text,
+            isCompleted: false,
+          })),
       });
     }
   }
@@ -97,14 +99,12 @@ export default function useLocalStorage() {
     });
   }
 
-  // Mark a habit as stopped and remove it from the active habits list
+  // Mark a habit as stopped
   function stopHabit(habitId) {
-    const habitIndex = habits.value.findIndex(h => h.id === habitId);
-    if (habitIndex !== -1) {
-      habits.value[habitIndex] = { ...habits.value[habitIndex], stopped: true };
+    const habit = habits.value.find(h => h.id === habitId);
+    if (habit) {
+      habit.stoppedAt = new Date().toISOString();
     }
-    habits.value = habits.value.filter(h => h.id !== habitId);
-    cleanupEmptyDailyEntries();
   }
 
   // Remove a habit from both habits and dailyHabits
@@ -117,6 +117,14 @@ export default function useLocalStorage() {
     cleanupEmptyDailyEntries();
   }
 
+  // Get active habits for a specific date
+  function getActiveHabitsForDate(date) {
+    return habits.value.filter(habit => 
+      new Date(habit.createdAt) <= new Date(date) && 
+      (!habit.stoppedAt || new Date(habit.stoppedAt) > new Date(date))
+    );
+  }
+
   return {
     habits,
     dailyHabits,
@@ -126,5 +134,6 @@ export default function useLocalStorage() {
     updateHabitName,
     stopHabit,
     deleteHabit,
+    getActiveHabitsForDate,
   };
 }
