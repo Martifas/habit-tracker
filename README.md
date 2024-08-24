@@ -33,7 +33,7 @@ Completes the habit for the day. If habit is completed you can uncomplete it by 
 Edit the current habit name. The habit will be affected for all days.
 
 ### Stop habit (stop icon)
-Stops this habbit for appearing in new days (past or future). Stays in days in was added before stop
+Stops this habbit for appearing in new days (future).
 
 ### Delete habit (trashcan icon)
 Deletes this habbit from all records, does not appear in the new records
