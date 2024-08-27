@@ -54,7 +54,11 @@ export default function useLocalStorage() {
       habits.value.length > 0
         ? Math.max(...habits.value.map(h => h.id)) + 1
         : 0;
-    habits.value.push({ id: newId, text: habitText, createdAt: new Date().toISOString() });
+    habits.value.push({
+      id: newId,
+      text: habitText,
+      createdAt: new Date().toISOString(),
+    });
   }
 
   // Add a new daily entry for a specific date
@@ -64,7 +68,10 @@ export default function useLocalStorage() {
       dailyHabits.value.push({
         date,
         habits: habits.value
-          .filter(habit => !habit.stoppedAt || new Date(habit.stoppedAt) > new Date(date))
+          .filter(
+            habit =>
+              !habit.stoppedAt || new Date(habit.stoppedAt) > new Date(date),
+          )
           .map(habit => ({
             id: habit.id,
             text: habit.text,
@@ -119,9 +126,10 @@ export default function useLocalStorage() {
 
   // Get active habits for a specific date
   function getActiveHabitsForDate(date) {
-    return habits.value.filter(habit => 
-      new Date(habit.createdAt) <= new Date(date) && 
-      (!habit.stoppedAt || new Date(habit.stoppedAt) > new Date(date))
+    return habits.value.filter(
+      habit =>
+        new Date(habit.createdAt) <= new Date(date) &&
+        (!habit.stoppedAt || new Date(habit.stoppedAt) > new Date(date)),
     );
   }
 

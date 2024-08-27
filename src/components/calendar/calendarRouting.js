@@ -11,14 +11,22 @@ export default function useCalendarRouting() {
   const getTodayString = () => new Date().toLocaleDateString('en-CA');
 
   // Helper function to check if a date is valid
-  const isValidDate = date => date instanceof Date && !isNaN(date);
+  const isValidDate = date => date instanceof Date && !Number.isNaN(date);
 
   // Initialize with route date or today
   const initialDate = route.params.date
     ? new Date(route.params.date)
     : new Date();
 
-  calendarStore.setCenterDate(isValidDate(initialDate) ? initialDate : new Date());
+  function moveToday() {
+    const today = new Date();
+    calendarStore.setCenterDate(today);
+    router.push({ name: 'day', params: { date: getTodayString() } });
+  }
+
+  calendarStore.setCenterDate(
+    isValidDate(initialDate) ? initialDate : new Date(),
+  );
 
   watch(
     () => calendarStore.centerDate,
@@ -41,9 +49,10 @@ export default function useCalendarRouting() {
       if (newDateString) {
         const newDate = new Date(newDateString);
         if (isValidDate(newDate)) {
-          const newDateString = newDate.toLocaleDateString('en-CA');
-          const currentDateString = calendarStore.centerDate.toLocaleDateString('en-CA');
-          if (newDateString !== currentDateString) {
+          const formattedNewDateString = newDate.toLocaleDateString('en-CA');
+          const currentDateString =
+            calendarStore.centerDate.toLocaleDateString('en-CA');
+          if (formattedNewDateString !== currentDateString) {
             calendarStore.setCenterDate(newDate);
           }
         } else {
@@ -56,12 +65,6 @@ export default function useCalendarRouting() {
       }
     },
   );
-
-  function moveToday() {
-    const today = new Date();
-    calendarStore.setCenterDate(today);
-    router.push({ name: 'day', params: { date: getTodayString() } });
-  }
 
   return {
     moveToday,
