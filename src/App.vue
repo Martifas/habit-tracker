@@ -25,7 +25,7 @@ watch(
   <div class="w-full md:w-4/5 lg:w-3/5 mx-auto">
     <ErrorPopup v-if="errorMessage" :message="errorMessage" />
     <div>
-      <header class="sticky top-0 z-50">
+      <header class="sticky top-0 z-40">
         <RouterView class="pb-3" />
       </header>
       <main>
