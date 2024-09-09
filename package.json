@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "lint:style": "npx stylelint \"**/*.(s?css|vue)\"",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.22",
@@ -23,9 +25,13 @@
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.47.0",
     "@rushstack/eslint-patch": "^1.10.4",
+    "@tsconfig/node18": "^18.2.4",
+    "@types/node": "^22.5.4",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -39,6 +45,16 @@
     "stylelint-config-standard": "^36.0.1",
     "stylelint-config-standard-vue": "^1.0.0",
     "tailwindcss": "^3.4.10",
-    "vite": "^5.3.1"
-  }
+    "typescript": "^5.6.2",
+    "vite": "^5.3.1",
+    "vitest": "^2.0.5"
+  },
+  "description": "```sh\r npm install\r ```",
+  "main": "postcss.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
