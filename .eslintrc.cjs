@@ -1,3 +1,8 @@
+// @ts-nocheck
+
+const { default: jsx } = require('@vue/eslint-config-airbnb/rules/jsx');
+const { error } = require('console');
+
 /* eslint-env node */
 require('@rushstack/eslint-patch/modern-module-resolution');
 
@@ -19,4 +24,15 @@ module.exports = {
       },
     },
   },
+  rules: {
+    import/extensions: [
+      error, ignorePackages, {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+        vue: 'never'
+      }
+    ]
+  }
 };
