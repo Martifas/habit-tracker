@@ -7,6 +7,17 @@ import HabitEdit from './HabitEdit.vue';
 import UndoIcon from '../../assets/icons/undo.svg';
 import CompleteIcon from '../../assets/icons/complete.svg';
 
+interface Habit {
+  id: number;
+  text: string;
+  isCompleted: boolean;
+}
+
+interface DailyHabitEntry {
+  date: string;
+  habits: Habit[];
+}
+
 const calendarStore = useCalendarStore();
 const {
   dailyHabits,
@@ -24,52 +35,52 @@ const formattedCenterDate = computed(() => {
 });
 
 // Watch for changes in the center date and add a new daily entry when it changes
-watch(formattedCenterDate, newDate => {
-  addDailyEntry(newDate);
+watch(formattedCenterDate, (newDate: string) => {
+  addDailyEntry(new Date(newDate));
 });
 
 // Initialize the daily entry for the current date
-addDailyEntry(formattedCenterDate.value);
+addDailyEntry(new Date(formattedCenterDate.value));
 
 // Computed property to get habits for the current date
-const currentDateHabits = computed(() => {
+const currentDateHabits = computed((): Habit[] => {
   const entry = dailyHabits.value.find(
-    e => e.date === formattedCenterDate.value,
+    (e: DailyHabitEntry) => e.date === formattedCenterDate.value
   );
   return entry ? entry.habits : [];
 });
 
-const handleCompleteHabit = habitId => {
+const handleCompleteHabit = (habitId: number) => {
   completeHabit(formattedCenterDate.value, habitId);
 };
 
-const handleAddHabit = habitText => {
+const handleAddHabit = (habitText: string) => {
   addHabit(habitText);
-  addDailyEntry(formattedCenterDate.value);
+  addDailyEntry(new Date(formattedCenterDate.value));
 };
 
-const handleUpdateHabitName = (habitId, newName) => {
+const handleUpdateHabitName = (habitId: number, newName: string) => {
   updateHabitName(habitId, newName);
 };
 
-const handleStopHabit = habitId => {
+const handleStopHabit = (habitId: number) => {
   stopHabit(habitId);
 };
 
-const handleDeleteHabit = habitId => {
+const handleDeleteHabit = (habitId: number) => {
   deleteHabit(habitId);
 };
 
-const getCompleteButtonIcon = isCompleted =>
+const getCompleteButtonIcon = (isCompleted: boolean) =>
   isCompleted ? UndoIcon : CompleteIcon;
 
-const getHabitBackgroundColor = isCompleted =>
+const getHabitBackgroundColor = (isCompleted: boolean) =>
   isCompleted ? '#d1e6d4' : '#e2e6d1';
 
-const getCompleteStateText = isCompleted =>
+const getCompleteStateText = (isCompleted: boolean) =>
   isCompleted ? 'Completed' : 'Not Completed';
 
-const getCompleteButtonLabel = isCompleted =>
+const getCompleteButtonLabel = (isCompleted: boolean) =>
   isCompleted ? 'Mark as not completed' : 'Mark as completed';
 </script>
 

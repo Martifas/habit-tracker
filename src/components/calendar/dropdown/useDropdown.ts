@@ -7,7 +7,7 @@ function toggleDropdown() {
   showDropdown.value = !showDropdown.value;
 }
 
-function selectView(view) {
+function selectView(view: string) {
   selected.value = view;
   showDropdown.value = false;
 }

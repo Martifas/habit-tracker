@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import DropdownElement from './dropdown/DropdownIndex.vue';
 import useDropdown from './dropdown/useDropdown';
 import useCalendarStore from '../../store/calendarStore';
@@ -13,17 +12,15 @@ const props = defineProps({
 });
 
 const { selected } = useDropdown();
-const calendar = ref(null);
 const calendarStore = useCalendarStore();
 const { moveToday } = useCalendarRouting();
 
 function handleMoveToday() {
   moveToday();
-  calendar.value.move(calendarStore.centerDate);
 }
 
-function handleDateChange(newDate) {
-  calendarStore.setCenterDate(newDate);
+function handleDateChange(newDate: Date | string) {
+  calendarStore.setCenterDate(new Date(newDate));
 }
 
 // Initialize the calendar store with the prop date

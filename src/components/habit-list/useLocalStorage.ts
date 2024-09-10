@@ -1,13 +1,33 @@
 import { ref, watch } from 'vue';
+import type { Ref } from 'vue';
+
+interface Habit {
+  id: number;
+  text: string;
+  createdAt: string;
+  stoppedAt?: string;
+}
+
+interface DailyHabit {
+  id: number;
+  text: string;
+  isCompleted: boolean;
+}
+
+interface DailyEntry {
+  date: string;
+  habits: DailyHabit[];
+}
 
 export default function useLocalStorage() {
-  const habits = ref(JSON.parse(localStorage.getItem('habits')) || []);
-  const dailyHabits = ref(
-    JSON.parse(localStorage.getItem('dailyHabits')) || []
+  const habits: Ref<Habit[]> = ref(
+    JSON.parse(localStorage.getItem('habits') || '[]')
+  );
+  const dailyHabits: Ref<DailyEntry[]> = ref(
+    JSON.parse(localStorage.getItem('dailyHabits') || '[]')
   );
 
-  // Add a new habit to all existing daily entries
-  function updateDailyHabitsWithNewHabit(newHabit) {
+  function updateDailyHabitsWithNewHabit(newHabit: Habit): void {
     dailyHabits.value.forEach((entry) => {
       if (!entry.habits.some((h) => h.id === newHabit.id)) {
         entry.habits.push({
@@ -19,14 +39,12 @@ export default function useLocalStorage() {
     });
   }
 
-  // Remove daily entries with empty habit arrays
-  function cleanupEmptyDailyEntries() {
+  function cleanupEmptyDailyEntries(): void {
     dailyHabits.value = dailyHabits.value.filter(
       (entry) => entry.habits.length > 0
     );
   }
 
-  // Watch for changes in habits, update localStorage and dailyHabits
   watch(
     habits,
     (newHabits) => {
@@ -39,7 +57,6 @@ export default function useLocalStorage() {
     { deep: true }
   );
 
-  // Watch for changes in dailyHabits and update localStorage
   watch(
     dailyHabits,
     (newDailyHabits) => {
@@ -48,8 +65,7 @@ export default function useLocalStorage() {
     { deep: true }
   );
 
-  // Add a new habit to the habits list
-  function addHabit(habitText) {
+  function addHabit(habitText: string): void {
     const newId =
       habits.value.length > 0
         ? Math.max(...habits.value.map((h) => h.id)) + 1
@@ -61,18 +77,17 @@ export default function useLocalStorage() {
     });
   }
 
-  // Add a new daily entry for a specific date
-  function addDailyEntry(date) {
+  function addDailyEntry(date: Date): void {
+    const dateString = date.toISOString().split('T')[0];
     const existingEntry = dailyHabits.value.find(
-      (entry) => entry.date === date
+      (entry) => entry.date === dateString
     );
     if (!existingEntry) {
       dailyHabits.value.push({
-        date,
+        date: dateString,
         habits: habits.value
           .filter(
-            (habit) =>
-              !habit.stoppedAt || new Date(habit.stoppedAt) > new Date(date)
+            (habit) => !habit.stoppedAt || new Date(habit.stoppedAt) > date
           )
           .map((habit) => ({
             id: habit.id,
@@ -83,8 +98,7 @@ export default function useLocalStorage() {
     }
   }
 
-  // Toggle the completion status of a habit for a specific date
-  function completeHabit(date, habitId) {
+  function completeHabit(date: string, habitId: number): void {
     const dayEntry = dailyHabits.value.find((entry) => entry.date === date);
     if (dayEntry) {
       const habit = dayEntry.habits.find((h) => h.id === habitId);
@@ -94,8 +108,7 @@ export default function useLocalStorage() {
     }
   }
 
-  // Update the name of a habit in both habits and dailyHabits
-  function updateHabitName(habitId, newName) {
+  function updateHabitName(habitId: number, newName: string): void {
     const habit = habits.value.find((h) => h.id === habitId);
     if (habit) {
       habit.text = newName;
@@ -108,16 +121,14 @@ export default function useLocalStorage() {
     });
   }
 
-  // Mark a habit as stopped
-  function stopHabit(habitId) {
+  function stopHabit(habitId: number): void {
     const habit = habits.value.find((h) => h.id === habitId);
     if (habit) {
       habit.stoppedAt = new Date().toISOString();
     }
   }
 
-  // Remove a habit from both habits and dailyHabits
-  function deleteHabit(habitId) {
+  function deleteHabit(habitId: number): void {
     habits.value = habits.value.filter((h) => h.id !== habitId);
     dailyHabits.value = dailyHabits.value.map((entry) => ({
       ...entry,
@@ -126,12 +137,11 @@ export default function useLocalStorage() {
     cleanupEmptyDailyEntries();
   }
 
-  // Get active habits for a specific date
-  function getActiveHabitsForDate(date) {
+  function getActiveHabitsForDate(date: Date): Habit[] {
     return habits.value.filter(
       (habit) =>
-        new Date(habit.createdAt) <= new Date(date) &&
-        (!habit.stoppedAt || new Date(habit.stoppedAt) > new Date(date))
+        new Date(habit.createdAt) <= date &&
+        (!habit.stoppedAt || new Date(habit.stoppedAt) > date)
     );
   }
 

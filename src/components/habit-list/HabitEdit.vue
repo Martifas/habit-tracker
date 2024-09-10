@@ -20,7 +20,7 @@ const showEditPopup = ref(false);
 const showStopPopup = ref(false);
 const showDeletePopup = ref(false);
 
-function handleConfirm(newName) {
+function handleConfirm(newName: string) {
   if (newName && newName !== props.habit.text) {
     emit('update-habit-name', props.habit.id, newName);
   }
