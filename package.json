@@ -11,7 +11,8 @@
     "lint:style": "npx stylelint \"**/*.(s?css|vue)\"",
     "format": "prettier --write src/",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.22",
@@ -21,7 +22,6 @@
     "bootstrap-icons": "^1.11.3",
     "pinia": "^2.2.2",
     "v-calendar": "^3.1.2",
-    "vue": "^3.4.29",
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
@@ -47,7 +47,9 @@
     "tailwindcss": "^3.4.10",
     "typescript": "^5.6.2",
     "vite": "^5.3.1",
-    "vitest": "^2.0.5"
+    "vitest": "^2.0.5",
+    "vue": "^3.5.3",
+    "vue-tsc": "^2.1.6"
   },
   "description": "```sh\r npm install\r ```",
   "main": "postcss.config.js",

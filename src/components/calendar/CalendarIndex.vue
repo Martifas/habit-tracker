@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import DropdownElement from './dropdown/DropdownIndex.vue';
 import useDropdown from './dropdown/useDropdown';

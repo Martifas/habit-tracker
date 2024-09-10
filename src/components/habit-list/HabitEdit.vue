@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import DeleteIcon from '../../assets/icons/delete.svg';
 import StopIcon from '../../assets/icons/stop.svg';
