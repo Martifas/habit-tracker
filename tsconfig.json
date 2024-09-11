@@ -21,6 +21,6 @@
     "noImplicitAny": true,
     "strictNullChecks": true
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "tests/useHabitComplete.test.ts"],
   "exclude": ["node_modules", ".eslintrc.cjs"]
 }

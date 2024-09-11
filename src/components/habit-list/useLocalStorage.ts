@@ -65,16 +65,21 @@ export default function useLocalStorage() {
     { deep: true }
   );
 
+  // TO DO: add unit test for it
+  function createNewHabit(habitText: string, newId: number): Habit {
+    return {
+      id: newId,
+      text: habitText,
+      createdAt: new Date().toISOString(),
+    };
+  }
+
   function addHabit(habitText: string): void {
     const newId =
       habits.value.length > 0
         ? Math.max(...habits.value.map((h) => h.id)) + 1
         : 0;
-    habits.value.push({
-      id: newId,
-      text: habitText,
-      createdAt: new Date().toISOString(),
-    });
+    habits.value.push(createNewHabit(habitText, newId));
   }
 
   function addDailyEntry(date: Date): void {

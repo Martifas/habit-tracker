@@ -3,9 +3,8 @@ import { computed, watch } from 'vue';
 import NewHabitElement from './NewHabit.vue';
 import useCalendarStore from '../../store/calendarStore';
 import useLocalStorage from './useLocalStorage';
+import useHabitComplete from './useHabitComplete';
 import HabitEdit from './HabitEdit.vue';
-import UndoIcon from '../../assets/icons/undo.svg';
-import CompleteIcon from '../../assets/icons/complete.svg';
 
 interface Habit {
   id: number;
@@ -29,20 +28,24 @@ const {
   deleteHabit,
 } = useLocalStorage();
 
+const {
+  getCompleteButtonIcon,
+  getHabitBackgroundColor,
+  getCompleteStateText,
+  getCompleteButtonLabel,
+} = useHabitComplete();
+
 const formattedCenterDate = computed(() => {
   const date = new Date(calendarStore.centerDate);
   return date.toISOString().split('T')[0];
 });
 
-// Watch for changes in the center date and add a new daily entry when it changes
 watch(formattedCenterDate, (newDate: string) => {
   addDailyEntry(new Date(newDate));
 });
 
-// Initialize the daily entry for the current date
 addDailyEntry(new Date(formattedCenterDate.value));
 
-// Computed property to get habits for the current date
 const currentDateHabits = computed((): Habit[] => {
   const entry = dailyHabits.value.find(
     (e: DailyHabitEntry) => e.date === formattedCenterDate.value
@@ -70,18 +73,6 @@ const handleStopHabit = (habitId: number) => {
 const handleDeleteHabit = (habitId: number) => {
   deleteHabit(habitId);
 };
-
-const getCompleteButtonIcon = (isCompleted: boolean) =>
-  isCompleted ? UndoIcon : CompleteIcon;
-
-const getHabitBackgroundColor = (isCompleted: boolean) =>
-  isCompleted ? '#d1e6d4' : '#e2e6d1';
-
-const getCompleteStateText = (isCompleted: boolean) =>
-  isCompleted ? 'Completed' : 'Not Completed';
-
-const getCompleteButtonLabel = (isCompleted: boolean) =>
-  isCompleted ? 'Mark as not completed' : 'Mark as completed';
 </script>
 
 <template>
