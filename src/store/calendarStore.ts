@@ -4,7 +4,7 @@ import { ref } from 'vue';
 const useCalendarStore = defineStore('calendar', () => {
   const centerDate = ref(new Date());
 
-  function setCenterDate(date) {
+  function setCenterDate(date: Date) {
     centerDate.value = new Date(date);
   }
 

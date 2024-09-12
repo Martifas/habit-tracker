@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 import HabitIndex from './components/habit-list/HabitIndex.vue';
@@ -9,7 +9,7 @@ const errorMessage = ref('');
 
 watch(
   () => route.query.error,
-  newError => {
+  (newError) => {
     if (newError === 'invalid') {
       errorMessage.value = 'Invalid date entered. Redirected to today.';
     } else if (newError === 'future') {
@@ -17,7 +17,7 @@ watch(
     } else {
       errorMessage.value = '';
     }
-  },
+  }
 );
 </script>
 

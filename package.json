@@ -11,24 +11,29 @@
     "lint:style": "npx stylelint \"**/*.(s?css|vue)\"",
     "format": "prettier --write src/",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "test": "vitest",
+    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.22",
     "@heroicons/vue": "^2.1.5",
+    "@playwright/test": "^1.47.0",
     "@popperjs/core": "^2.11.8",
     "@vue/eslint-config-airbnb": "^8.0.0",
+    "@vuepic/vue-datepicker": "^9.0.3",
     "bootstrap-icons": "^1.11.3",
     "pinia": "^2.2.2",
     "v-calendar": "^3.1.2",
-    "vue": "^3.4.29",
+    "vue": "^3.5.3",
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
-    "@playwright/test": "^1.47.0",
     "@rushstack/eslint-patch": "^1.10.4",
     "@tsconfig/node18": "^18.2.4",
     "@types/node": "^22.5.4",
+    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@typescript-eslint/parser": "^8.5.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/tsconfig": "^0.5.1",
@@ -47,7 +52,8 @@
     "tailwindcss": "^3.4.10",
     "typescript": "^5.6.2",
     "vite": "^5.3.1",
-    "vitest": "^2.0.5"
+    "vitest": "^2.0.5",
+    "vue-tsc": "^2.1.6"
   },
   "description": "```sh\r npm install\r ```",
   "main": "postcss.config.js",

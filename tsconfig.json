@@ -1,11 +1,26 @@
 {
   "files": [],
+  "extends": "./tsconfig.app.json",
   "references": [
     {
       "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "strict": true,
+    "types": ["vite/client", "node"],
+    "target": "ESNext",
+    "lib": ["dom", "ESNext"],
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "tests/useHabitComplete.test.ts"],
+  "exclude": ["node_modules", ".eslintrc.cjs"]
 }

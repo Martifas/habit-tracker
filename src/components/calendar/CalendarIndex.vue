@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import DropdownElement from './dropdown/DropdownIndex.vue';
 import useDropdown from './dropdown/useDropdown';
@@ -22,8 +22,8 @@ function handleMoveToday() {
   calendar.value.move(calendarStore.centerDate);
 }
 
-function handleDateChange(newDate) {
-  calendarStore.setCenterDate(newDate);
+function handleDateChange(newDate: Date | string) {
+  calendarStore.setCenterDate(new Date(newDate));
 }
 
 // Initialize the calendar store with the prop date
@@ -36,7 +36,7 @@ calendarStore.setCenterDate(new Date(props.date));
     <div v-if="selected === 'Week'">
       <VDatePicker
         :max-date="new Date()"
-        :locale="{ firstDayOfWeek: 2 }"
+        :locale="{ firstDayOfWeek: 1 }"
         ref="calendar"
         expanded
         :model-value="calendarStore.centerDate"

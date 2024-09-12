@@ -6,31 +6,28 @@ export default function useCalendarRouting() {
   const router = useRouter();
   const route = useRoute();
   const calendarStore = useCalendarStore();
+  const getTodayString = (): string => new Date().toLocaleDateString('en-CA');
 
-  // Helper function to get today's date as YYYY-MM-DD
-  const getTodayString = () => new Date().toLocaleDateString('en-CA');
+  const isValidDate = (date: Date): boolean =>
+    date instanceof Date && !Number.isNaN(date.getTime());
 
-  // Helper function to check if a date is valid
-  const isValidDate = date => date instanceof Date && !Number.isNaN(date);
-
-  // Initialize with route date or today
-  const initialDate = route.params.date
-    ? new Date(route.params.date)
+  const initialDate = (route.params.date as string)
+    ? new Date(route.params.date as string)
     : new Date();
 
-  function moveToday() {
+  function moveToday(): void {
     const today = new Date();
     calendarStore.setCenterDate(today);
     router.push({ name: 'day', params: { date: getTodayString() } });
   }
 
   calendarStore.setCenterDate(
-    isValidDate(initialDate) ? initialDate : new Date(),
+    isValidDate(initialDate) ? initialDate : new Date()
   );
 
   watch(
     () => calendarStore.centerDate,
-    newDate => {
+    (newDate: Date) => {
       if (isValidDate(newDate)) {
         const dateString = newDate.toLocaleDateString('en-CA');
         if (route.params.date !== dateString) {
@@ -40,13 +37,13 @@ export default function useCalendarRouting() {
         // If invalid date somehow got set, reset to today
         moveToday();
       }
-    },
+    }
   );
 
   watch(
     () => route.params.date,
-    newDateString => {
-      if (newDateString) {
+    (newDateString: string | string[] | undefined) => {
+      if (newDateString && typeof newDateString === 'string') {
         const newDate = new Date(newDateString);
         if (isValidDate(newDate)) {
           const formattedNewDateString = newDate.toLocaleDateString('en-CA');
@@ -60,10 +57,10 @@ export default function useCalendarRouting() {
           moveToday();
         }
       } else {
-        // Empty date, move to today
+        // Empty date or invalid type, move to today
         moveToday();
       }
-    },
+    }
   );
 
   return {

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { toRef, ref } from 'vue';
 
 const props = defineProps({
