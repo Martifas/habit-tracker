@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 /* eslint-env node */
 require('@rushstack/eslint-patch/modern-module-resolution');
 
@@ -18,7 +17,12 @@ module.exports = {
   settings: {
     'import/resolver': {
       node: {
-        extensions: ['.js', '.vue', 'ts'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
+      },
+      typescript: {},
+      alias: {
+        map: [['@', './src']],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
       },
     },
   },
@@ -28,6 +32,7 @@ module.exports = {
       'ignorePackages',
       {
         js: 'never',
+        mjs: 'never',
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
