@@ -20,7 +20,6 @@ const toggleInput = () => {
   } else {
     isInputVisible.value = !isInputVisible.value;
     if (isInputVisible.value) {
-      // Focus the input field when it becomes visible
       setTimeout(() => {
         document.getElementById(inputId)?.focus();
       }, 0);

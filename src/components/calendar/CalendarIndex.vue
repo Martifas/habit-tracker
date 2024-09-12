@@ -28,7 +28,6 @@ function handleDateChange(newDate: Date | string) {
   calendarStore.setCenterDate(new Date(newDate));
 }
 
-// Initialize the calendar store with the prop date
 calendarStore.setCenterDate(new Date(props.date));
 </script>
 

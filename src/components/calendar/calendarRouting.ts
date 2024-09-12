@@ -34,7 +34,6 @@ export default function useCalendarRouting() {
           router.push({ name: 'day', params: { date: dateString } });
         }
       } else {
-        // If invalid date somehow got set, reset to today
         moveToday();
       }
     }

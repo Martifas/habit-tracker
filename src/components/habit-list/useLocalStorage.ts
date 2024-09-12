@@ -65,7 +65,7 @@ export default function useLocalStorage() {
     { deep: true }
   );
 
-  // TO DO: add unit test for it
+
   function createNewHabit(habitText: string, newId: number): Habit {
     return {
       id: newId,
