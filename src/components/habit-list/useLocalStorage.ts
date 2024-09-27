@@ -65,7 +65,6 @@ export default function useLocalStorage() {
     { deep: true }
   );
 
-
   function createNewHabit(habitText: string, newId: number): Habit {
     return {
       id: newId,
