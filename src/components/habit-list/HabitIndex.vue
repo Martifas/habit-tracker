@@ -89,7 +89,11 @@ const handleDeleteHabit = (habitId: number) => {
         >
           <div>
             <h3 class="m-2 font-bold text-xl">{{ habit.text }}</h3>
-            <div class="font-bold m-2 text-sm" aria-live="polite">
+            <div
+              class="font-bold m-2 text-sm"
+              aria-live="polite"
+              aria-label="completion-status"
+            >
               {{ getCompleteStateText(habit.isCompleted) }}
             </div>
           </div>

@@ -10,9 +10,9 @@ export default defineConfig({
       '**/node_modules/**',
       '**/dist/**',
       '**/cypress/**',
-      '**/__tests__/**',
+      '**/tests/**',
       '**/e2e/**',
-      '**/*.e2e.spec.ts',
+      '**/habitTracker.spec.ts',
     ],
   },
 });

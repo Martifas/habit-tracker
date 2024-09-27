@@ -1,5 +1,5 @@
 import UndoIcon from '../../assets/icons/undo.svg';
-import CompleteIcon from '../../assets/icons/completeIcon';
+import CompleteIcon from '../../assets/icons/complete.svg';
 
 export default function useHabitComplete() {
   const getCompleteButtonIcon = (isCompleted: boolean) =>
