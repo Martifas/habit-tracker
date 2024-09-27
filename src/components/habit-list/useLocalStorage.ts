@@ -5,7 +5,7 @@ interface Habit {
   id: number;
   text: string;
   createdAt: string;
-  stoppedAt?: string;
+  stopped: boolean;
 }
 
 interface DailyHabit {
@@ -65,12 +65,12 @@ export default function useLocalStorage() {
     { deep: true }
   );
 
-  // TO DO: add unit test for it
   function createNewHabit(habitText: string, newId: number): Habit {
     return {
       id: newId,
       text: habitText,
       createdAt: new Date().toISOString(),
+      stopped: false,
     };
   }
 
@@ -91,9 +91,7 @@ export default function useLocalStorage() {
       dailyHabits.value.push({
         date: dateString,
         habits: habits.value
-          .filter(
-            (habit) => !habit.stoppedAt || new Date(habit.stoppedAt) > date
-          )
+          .filter((habit) => !habit.stopped)
           .map((habit) => ({
             id: habit.id,
             text: habit.text,
@@ -129,7 +127,7 @@ export default function useLocalStorage() {
   function stopHabit(habitId: number): void {
     const habit = habits.value.find((h) => h.id === habitId);
     if (habit) {
-      habit.stoppedAt = new Date().toISOString();
+      habit.stopped = true;
     }
   }
 
@@ -144,9 +142,7 @@ export default function useLocalStorage() {
 
   function getActiveHabitsForDate(date: Date): Habit[] {
     return habits.value.filter(
-      (habit) =>
-        new Date(habit.createdAt) <= date &&
-        (!habit.stoppedAt || new Date(habit.stoppedAt) > date)
+      (habit) => new Date(habit.createdAt) <= date && habit.stopped === false
     );
   }
 

@@ -25,25 +25,21 @@ const routes: RouteRecordRaw[] = [
         const inputDate = new Date(dateParam);
         const today = new Date();
         if (Number.isNaN(inputDate.getTime())) {
-          // Invalid date format
           next({
             name: 'day',
             params: { date: formatDate(today) },
             query: { error: 'invalid' },
           });
         } else if (inputDate > today) {
-          // Future date
           next({
             name: 'day',
             params: { date: formatDate(today) },
             query: { error: 'future' },
           });
         } else {
-          // Valid date
           next();
         }
       } else {
-        // No date parameter, redirect to today's date
         next({ name: 'day', params: { date: formatDate(new Date()) } });
       }
     },

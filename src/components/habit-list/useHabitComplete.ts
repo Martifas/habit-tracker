@@ -13,6 +13,7 @@ export default function useHabitComplete() {
 
   const getCompleteButtonLabel = (isCompleted: boolean) =>
     isCompleted ? 'Mark as not completed' : 'Mark as completed';
+
   return {
     getCompleteButtonIcon,
     getHabitBackgroundColor,

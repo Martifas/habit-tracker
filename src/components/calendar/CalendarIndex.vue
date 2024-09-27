@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import type { Ref } from 'vue';
+import { DatePicker } from 'v-calendar';
 import DropdownElement from './dropdown/DropdownIndex.vue';
 import useDropdown from './dropdown/useDropdown';
 import useCalendarStore from '../../store/calendarStore';
@@ -13,20 +15,19 @@ const props = defineProps({
 });
 
 const { selected } = useDropdown();
-const calendar = ref(null);
+const calendar: Ref<InstanceType<typeof DatePicker> | null> = ref(null);
 const calendarStore = useCalendarStore();
 const { moveToday } = useCalendarRouting();
 
 function handleMoveToday() {
   moveToday();
-  calendar.value.move(calendarStore.centerDate);
+  calendar.value?.move(calendarStore.centerDate);
 }
 
 function handleDateChange(newDate: Date | string) {
   calendarStore.setCenterDate(new Date(newDate));
 }
 
-// Initialize the calendar store with the prop date
 calendarStore.setCenterDate(new Date(props.date));
 </script>
 

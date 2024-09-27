@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import UndoIcon from '../src/assets/icons/undo.svg';
-import CompleteIcon from '../src/assets/icons/complete.svg';
-import useHabitComplete from '../src/components/habit-list/useHabitComplete';
+import UndoIcon from '../../assets/icons/undo.svg';
+import CompleteIcon from '../../assets/icons/complete.svg';
+import useHabitComplete from './useHabitComplete';
 
 const {
   getCompleteButtonIcon,

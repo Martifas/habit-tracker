@@ -3,7 +3,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import VCalendar from 'v-calendar';
 import App from './App.vue';
-import router from './router'
+import router from './router';
 import 'v-calendar/dist/style.css';
 import './index.css';
 
