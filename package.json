@@ -29,6 +29,7 @@
     "vue-router": "^4.3.3",
     "@vitejs/plugin-vue": "^5.0.5",
     "vite-plugin-svgr": "^4.2.0",
+    "vitest": "^2.0.5",
     "vite": "^5.3.1"
   },
   "devDependencies": {
@@ -53,7 +54,6 @@
     "stylelint-config-standard-vue": "^1.0.0",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.6.2",
-    "vitest": "^2.0.5",
     "vue-tsc": "^2.1.6"
   },
   "description": "```sh\r npm install\r ```",
