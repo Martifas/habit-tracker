@@ -18,6 +18,18 @@ npm run dev
 npm run build
 ```
 
+### Run unit tests
+
+```sh
+npm run test:unit
+```
+
+### Run end-to-end tests
+
+```sh
+npm run test:e2e
+```
+
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh
@@ -33,7 +45,7 @@ Completes the habit for the day. If habit is completed you can uncomplete it by 
 Edit the current habit name. The habit will be affected for all days.
 
 ### Stop habit (stop icon)
-Stops this habbit for appearing in new days (future).
+Stops this habbit for appearing in new days.
 
 ### Delete habit (trashcan icon)
 Deletes this habbit from all records, does not appear in the new records
