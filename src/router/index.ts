@@ -6,6 +6,10 @@ function formatDate(date: Date): string {
   return date.toISOString().split('T')[0];
 }
 
+function isValidDateFormat(dateString: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}$/.test(dateString);
+}
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -21,27 +25,54 @@ const routes: RouteRecordRaw[] = [
     }),
     beforeEnter: (to, from, next) => {
       const dateParam = to.params.date as string | undefined;
+      const today = new Date();
+      const formattedToday = formatDate(today);
+
       if (dateParam) {
+        if (!isValidDateFormat(dateParam)) {
+          next({
+            name: 'day',
+            params: { date: formattedToday },
+            query: { error: 'invalid' },
+          });
+          return;
+        }
+
         const inputDate = new Date(dateParam);
-        const today = new Date();
+
         if (Number.isNaN(inputDate.getTime())) {
           next({
             name: 'day',
-            params: { date: formatDate(today) },
+            params: { date: formattedToday },
             query: { error: 'invalid' },
           });
         } else if (inputDate > today) {
           next({
             name: 'day',
-            params: { date: formatDate(today) },
+            params: { date: formattedToday },
             query: { error: 'future' },
           });
         } else {
           next();
         }
       } else {
-        next({ name: 'day', params: { date: formatDate(new Date()) } });
+        next({ name: 'day', params: { date: formattedToday } });
       }
+    },
+  },
+  {
+    path: '/:date(\\d{4}-\\d{2}-\\d{2})',
+    redirect: (to) => ({ name: 'day', params: { date: to.params.date } }),
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: () => {
+      const today = new Date();
+      return {
+        name: 'day',
+        params: { date: formatDate(today) },
+        query: { error: 'invalid' },
+      };
     },
   },
 ];
