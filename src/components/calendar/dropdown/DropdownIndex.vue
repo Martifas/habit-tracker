@@ -13,14 +13,14 @@ const dropdownId = ref('view-select-dropdown');
       @click="toggleDropdown"
       :aria-expanded="showDropdown"
       :aria-controls="dropdownId"
-      class="text-primary-green"
+      class="text-primary-green border-solid border-2 border-green-300 rounded-md p-1 hover:text-green-800 hover:border-green-800"
     >
-      Select View: {{ selected }}
+      ▼ Select View: {{ selected }}
     </button>
     <div
       v-if="showDropdown"
       :id="dropdownId"
-      class="absolute right-0 border border-black"
+      class="absolute right-0 border border-green-800"
       role="menu"
       aria-label="View options"
     >
