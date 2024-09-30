@@ -6,6 +6,7 @@ interface Habit {
   text: string;
   createdAt: string;
   stopped: boolean;
+  stoppedAt?: string;
 }
 
 interface DailyHabit {
@@ -91,7 +92,11 @@ export default function useLocalStorage() {
       dailyHabits.value.push({
         date: dateString,
         habits: habits.value
-          .filter((habit) => !habit.stopped)
+          .filter(
+            (habit) =>
+              !habit.stopped ||
+              (habit.stoppedAt && habit.stoppedAt > dateString)
+          )
           .map((habit) => ({
             id: habit.id,
             text: habit.text,
@@ -124,10 +129,25 @@ export default function useLocalStorage() {
     });
   }
 
-  function stopHabit(habitId: number): void {
+  function updateDailyEntriesAfterDate(date: string, habitId: number): void {
+    dailyHabits.value = dailyHabits.value.map((entry) => {
+      if (entry.date > date) {
+        return {
+          ...entry,
+          habits: entry.habits.filter((h) => h.id !== habitId),
+        };
+      }
+      return entry;
+    });
+    cleanupEmptyDailyEntries();
+  }
+
+  function stopHabit(habitId: number, calendarDate: string): void {
     const habit = habits.value.find((h) => h.id === habitId);
     if (habit) {
       habit.stopped = true;
+      habit.stoppedAt = calendarDate;
+      updateDailyEntriesAfterDate(calendarDate, habitId);
     }
   }
 
@@ -141,8 +161,11 @@ export default function useLocalStorage() {
   }
 
   function getActiveHabitsForDate(date: Date): Habit[] {
+    const dateString = date.toISOString().split('T')[0];
     return habits.value.filter(
-      (habit) => new Date(habit.createdAt) <= date && habit.stopped === false
+      (habit) =>
+        new Date(habit.createdAt) <= date &&
+        (!habit.stopped || (habit.stoppedAt && habit.stoppedAt > dateString))
     );
   }
 

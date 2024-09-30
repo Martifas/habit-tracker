@@ -67,7 +67,7 @@ const handleUpdateHabitName = (habitId: number, newName: string) => {
 };
 
 const handleStopHabit = (habitId: number) => {
-  stopHabit(habitId);
+  stopHabit(habitId, formattedCenterDate.value);
 };
 
 const handleDeleteHabit = (habitId: number) => {
